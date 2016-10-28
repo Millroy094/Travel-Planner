@@ -1,0 +1,22 @@
+{
+  "name": "travel-planner",
+  "version": "1.0.0",
+  "description": "API to assist users to plan their journey",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Millroy098/Travel-Planner.git"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "Millroy S Fernandes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Millroy098/Travel-Planner/issues"
+  },
+  "homepage": "https://gitlab.com/Millroy098/Travel-Planner#README"
+}
