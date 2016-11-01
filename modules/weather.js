@@ -1,5 +1,7 @@
 'use strict'
 
+const request = require('request')
+
 /**
  * weather module.
  * @module weather
@@ -11,8 +13,16 @@
  * @param {data} route - the data returned as an object
  */
 
-const url = 'http://api.openweathermap.org/data/2.5/weather'
+
 const appid = 'e219b3ff10070ceb05a8a84a8416ff53'
+
+
+exports.getForecast = (destination, callback) => {
+	apiCall(destination, (err, weather) => {
+		if (err) return callback(err)
+		return callback(null, `Weather is ${weather}`)
+	})
+}
 
 
 /**
@@ -23,13 +33,14 @@ const appid = 'e219b3ff10070ceb05a8a84a8416ff53'
  */
 function apiCall(destination, callback) {
 	const firstIndex = 0
-	const url = `https://maps.googleapis.com/maps/api/directions/json?region=gb&origin=${origin}&destination=${destination}`
+	const url = `http://api.openweathermap.org/data/2.5/find?q=${destination}&units=metric&appid=${appid}`
 	console.log(url)
 	request.get(url, (err, res, body) => {
 		if (err) return callback(new Error('Open weather map error'))
 		const json = JSON.parse(body)
 		if (json.status !== 'OK') return callback(new Error('invalid location'))
-		const route = json.routes[firstIndex].legs[firstIndex]
-		return callback(null, route)
+		const weather = json.weather[firstIndex].description
+		console.log(weather)
+		return callback(null, weather)
 	})
 }

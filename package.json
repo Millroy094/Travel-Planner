@@ -15,6 +15,12 @@
   ],
   "author": "Millroy S Fernandes",
   "license": "ISC",
+  "dependencies": {
+
+    "readline-sync": "^1.2.21",
+    "request": "^2.67.0",
+    "sync-request": "^2.1.0"
+  },
   "bugs": {
     "url": "https://gitlab.com/Millroy098/Travel-Planner/issues"
   },

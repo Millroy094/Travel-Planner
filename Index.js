@@ -1,13 +1,14 @@
 'use strict'
 
-const readline = ('readline-sync')
-const directions = ('./modules/directions')
-const forecast = ('./modules/weather')
+const readline = require('readline-sync')
+const directions = require('./modules/directions')
+const forecast = require('./modules/weather')
 
 
 const origin = String(readline.question('start address: ')).trim()
 const destination = String(readline.question('Destination address: ')).trim()
-
+const longitude
+const latitude
 
 directions.getDistance(origin, destination, (err, distance) => {
 	try {
@@ -32,8 +33,20 @@ directions.getDirections(origin, destination, (err, steps) => {
 	try {
 		if (err) throw err
 		for (let step in steps){
-			console.log(step)
+			console.log(steps[step])
 		}
+				
+	} catch(err) {
+		console.log(`ERROR: ${err.message}`)
+	}
+})
+
+directions.getCoordinates(origin, destination, (err, lat, lng) => {
+	try {
+		if (err) throw err
+
+		longitude=lng
+		latitude=lat
 				
 	} catch(err) {
 		console.log(`ERROR: ${err.message}`)
@@ -42,14 +55,14 @@ directions.getDirections(origin, destination, (err, steps) => {
 
 
 
-forecast.getForecast(destination, (err, data) => {
+forecast.getForecast(destination + ",GB", (err, data) => {
 
 	try {
 		if (err) throw err
 			console.log(data)
 
 	} catch(err) {
-		console.log('ERROR: ${err.message}')
+		console.log(`ERROR: ${err.message}`)
 	}
 
 

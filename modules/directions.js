@@ -11,6 +11,7 @@
  * @param {data} route - the data returned as an object
  */
 const request = require('request')
+const replaceAll = require('replaceall')
 /**
  * returns the driving distance between two locations
  * @param {string} origin - the starting location for the journey
@@ -41,6 +42,22 @@ exports.getDuration = (origin, destination, callback) => {
 }
 
 /**
+ * returns the driving duration between two locations
+ * @param {string} origin - the starting location for the journey
+ * @param {string} destination - the ending location for the journey
+ * @param {apiCallback} callback - the callback run when api call is completed
+ * @returns {null} no return value
+ */
+
+exports.getCoordinates = (origin, destination, callback) => {
+	apiCall(origin, destination, (err, route) => {
+		if (err) return callback(err)
+		return callback(null, route.end_location.lat, route.end_location.lng)
+	})
+}
+
+
+/**
  * returns the driving steps between two locations
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
@@ -53,11 +70,15 @@ exports.getDirections = (origin, destination, callback) => {
 		if (err) return callback(err)
 				
 		const steps = []
+		steps.push("Directions to get there:")
+
 		for (let step in route.steps){
-			steps.push = route.steps[step].html_instructions
+			
+			steps.push( "- " + replaceAll("</b>", "",replaceAll("<b>", "",route.steps[step].html_instructions)))
+			
 		}
-		
-		return steps
+
+		return callback(null, steps)
 		
 	})
 }
