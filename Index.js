@@ -7,8 +7,8 @@ const forecast = require('./modules/weather')
 
 const origin = String(readline.question('start address: ')).trim()
 const destination = String(readline.question('Destination address: ')).trim()
-const longitude
-const latitude
+let longitude
+let latitude
 
 directions.getDistance(origin, destination, (err, distance) => {
 	try {
@@ -47,6 +47,20 @@ directions.getCoordinates(origin, destination, (err, lat, lng) => {
 
 		longitude=lng
 		latitude=lat
+
+		forecast.getForecast(latitude,longitude, (err, weather) => {
+
+			try {
+				
+				if (err) throw err
+
+				console.log(weather)
+
+			} catch(err) {
+				console.log(`ERROR: ${err.message}`)
+			}
+		})
+
 				
 	} catch(err) {
 		console.log(`ERROR: ${err.message}`)
@@ -54,19 +68,5 @@ directions.getCoordinates(origin, destination, (err, lat, lng) => {
 })
 
 
-
-forecast.getForecast(destination + ",GB", (err, data) => {
-
-	try {
-		if (err) throw err
-			console.log(data)
-
-	} catch(err) {
-		console.log(`ERROR: ${err.message}`)
-	}
-
-
-
-})
 
 console.log('EOF')

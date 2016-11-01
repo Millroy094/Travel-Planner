@@ -14,11 +14,11 @@ const request = require('request')
  */
 
 
-const appid = 'e219b3ff10070ceb05a8a84a8416ff53'
+const appid = '82aea3af796e9d2b3818f9688c420fa5'
 
 
-exports.getForecast = (destination, callback) => {
-	apiCall(destination, (err, weather) => {
+exports.getForecast = (lat, lng, callback) => {
+	apiCall(lat, lng, (err, weather) => {
 		if (err) return callback(err)
 		return callback(null, `Weather is ${weather}`)
 	})
@@ -31,16 +31,14 @@ exports.getForecast = (destination, callback) => {
  * @param {apiCallback} callback - the callback run when api call is completed
  * @returns {null} no return value
  */
-function apiCall(destination, callback) {
+function apiCall(lat, lng, callback) {
 	const firstIndex = 0
-	const url = `http://api.openweathermap.org/data/2.5/find?q=${destination}&units=metric&appid=${appid}`
+	const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}` 
 	console.log(url)
 	request.get(url, (err, res, body) => {
-		if (err) return callback(new Error('Open weather map error'))
+		if (err) return callback(new Error('Forcast.IO error'))
 		const json = JSON.parse(body)
-		if (json.status !== 'OK') return callback(new Error('invalid location'))
-		const weather = json.weather[firstIndex].description
-		console.log(weather)
+		const weather = json.hourly.summary
 		return callback(null, weather)
 	})
 }

@@ -42,7 +42,7 @@ exports.getDuration = (origin, destination, callback) => {
 }
 
 /**
- * returns the driving duration between two locations
+ * returns the lattitude and longitude of the location
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
  * @param {apiCallback} callback - the callback run when api call is completed
