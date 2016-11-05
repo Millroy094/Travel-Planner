@@ -20,7 +20,7 @@ const appid = '82aea3af796e9d2b3818f9688c420fa5'
 exports.getForecast = (lat, lng, callback) => {
 	apiCall(lat, lng, (err, weather) => {
 		if (err) return callback(err)
-		return callback(null, `Weather is ${weather}`)
+		return callback(null, weather)
 	})
 }
 
@@ -38,7 +38,7 @@ function apiCall(lat, lng, callback) {
 	request.get(url, (err, res, body) => {
 		if (err) return callback(new Error('Forcast.IO error'))
 		const json = JSON.parse(body)
-		const weather = json.hourly.summary
+		const weather = json.hourly
 		return callback(null, weather)
 	})
 }
