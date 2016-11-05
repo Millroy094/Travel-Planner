@@ -22,7 +22,7 @@ const replaceAll = require('replaceall')
 exports.getDistance = (origin, destination, callback) => {
 	apiCall(origin, destination, (err, route) => {
 		if (err) return callback(err)
-		return callback(null, `${route.distance.text}`)
+		return callback(null, route.distance.text)
 	})
 }
 
@@ -37,7 +37,7 @@ exports.getDistance = (origin, destination, callback) => {
 exports.getDuration = (origin, destination, callback) => {
 	apiCall(origin, destination, (err, route) => {
 		if (err) return callback(err)
-		return callback(null, `${route.duration.text}`)
+		return callback(null, route.duration.text)
 	})
 }
 

@@ -6,19 +6,21 @@ const forecast = require('./weather')
 
 
 exports.getData = (origin, destination, callback) => {
+	
+	try{
 
-	let data 
-	let distance
-	let duration
-	let steps = []
-	let hourly_forcast = []
+		let data 
+		let distance
+		let duration
+		let steps = []
+		let hourly_forcast = []
 
-	try { 
+	
 
 		directions.getDistance(origin, destination, (err, dist) => {
 			try {
 				if (err) throw err
-				distance = dist
+				distance = dist				
 			} catch(err) {
 				console.log(`ERROR: ${err.message}`)
 			}
@@ -27,7 +29,7 @@ exports.getData = (origin, destination, callback) => {
 		directions.getDuration(origin, destination, (err, dur) => {
 			try {
 				if (err) throw err
-				console.log(duration)
+				duration = dur
 			} catch(err) {
 				console.log(`ERROR: ${err.message}`)
 			}
@@ -61,6 +63,7 @@ exports.getData = (origin, destination, callback) => {
 						if (err) throw err
 
 						hourly_forcast = weather
+
 
 					} catch(err) {
 						console.log(`ERROR: ${err.message}`)
