@@ -7,12 +7,14 @@
 
 const request = require('request')
 const replaceAll = require('replaceall')
+
 /**
  * returns the driving distance between two locations
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
  * @returns {Promise} resolves the distance from origin to destination
  */
+
 exports.getDistance = (origin, destination) => {
 	
 	return new Promise((resolve, reject) => {
@@ -102,8 +104,7 @@ exports.getDirections = (origin, destination) => {
  * @function apiCall
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
- * @param {apiCallback} callback - the callback run when api call is completed
- * @returns {null} no return value
+ * @returns {Promise} resolves to an Json object containing data about route or rejects for an error
  */
 function apiCall(origin, destination) {
 	return  new Promise((resolve, reject) => {

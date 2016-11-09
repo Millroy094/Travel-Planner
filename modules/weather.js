@@ -6,16 +6,16 @@ const request = require('request')
  * weather module.
  * @module weather
  */
-/**
- * Callback used by apiCall
- * @callback apiCallback
- * @param {error} err - error returned (null if no error)
- * @param {data} route - the data returned as an object
- */
 
 
+// appid is the API key for Forcaste.IO
 const appid = '82aea3af796e9d2b3818f9688c420fa5'
 
+/**
+ * @param {string} lat - represents the latitude of the destination
+ * @param {string} lng - represents the longitude of the destination
+ * @returns {Promise} resolves to a JSON weather object or rejects for an error
+ */
 
 exports.getForecast = (lat, lng) => {
 	
@@ -35,9 +35,9 @@ exports.getForecast = (lat, lng) => {
 
 /**
  * @function apiCall
- * @param {string} destination - the ending location for the journey
- * @param {apiCallback} callback - the callback run when api call is completed
- * @returns {null} no return value
+ * @param {string} lat - represents the latitude of the destination
+ * @param {string} lng - represents the longitude of the destination
+ * @returns {Promise} resolves to a JSON weather object or rejects for an error
  */
 function apiCall(lat, lng) {
 	return new Promise((resolve, reject) => {
