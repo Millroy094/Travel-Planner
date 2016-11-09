@@ -5,81 +5,84 @@ const forecast = require('./weather')
 
 
 
-exports.getData = (origin, destination, callback) => {
-	
-	try{
-
-		let data 
-		let distance
-		let duration
-		let steps = []
-		let hourly_forcast = []
-
+exports.getData = (origin, destination) => {
 	
 
-		directions.getDistance(origin, destination, (err, dist) => {
-			try {
-				if (err) throw err
-				distance = dist				
-			} catch(err) {
-				console.log(`ERROR: ${err.message}`)
-			}
+	return new Promise((resolve, reject) => {
+
+
+		Promise.all([distance(origin, destination), duration(origin, destination), steps(origin, destination), weather(origin, destination)]).then( (values) => {
+
+			console.log(values)
+		}).catch((error) => {
+			reject(error)
 		})
 
-		directions.getDuration(origin, destination, (err, dur) => {
-			try {
-				if (err) throw err
-				duration = dur
-			} catch(err) {
-				console.log(`ERROR: ${err.message}`)
-			}
+
+	})
+
+	
+
+
+}
+
+function weather(origin, destination){ 
+	return new Promise((resolve, reject) => {
+		directions.getCoordinates(origin, destination).then((result) => {
+
+			forecast.getForecast(result.lat, result.lng).then((result) => {
+
+				resolve(result)
+
+			}).catch((error) => {
+				reject(error)
+			})
+
+
+		}).catch((error) => {
+				reject(error)
+			})
+	})
+
+}
+
+function distance(origin, destination){
+	return new Promise((resolve, reject) => {
+		 directions.getDistance(origin, destination).then((result) => {
+
+				resolve(result)
+
+			}).catch((error) => {
+				reject(error)
+			})
 		})
 
-		directions.getDirections(origin, destination, (err, st) => {
-			try {
-				if (err) throw err
-				steps = st
-						
-			} catch(err) {
-				console.log(`ERROR: ${err.message}`)
-			}
-		})
+}
 
-		directions.getCoordinates(origin, destination, (err, lat, lng) => {
-			
-			let longitude
-			let latitude
+function duration(origin, destination){
+	return new Promise((resolve, reject) => {
+		directions.getDuration(origin, destination).then((result) => {
 
-			try {
-				if (err) throw err
+				resolve(result)
 
-				longitude=lng
-				latitude=lat
+			}).catch((error) => {
+				reject(error)
+			})	
 
-				forecast.getForecast(latitude,longitude, (err, weather) => {
+	})
 
-					try {
-						
-						if (err) throw err
+}
 
-						hourly_forcast = weather
+function steps(origin, destination){ 
+	return new Promise((resolve, reject) => {
+	directions.getDirections(origin, destination).then((result) => {
 
+			resolve(result)
 
-					} catch(err) {
-						console.log(`ERROR: ${err.message}`)
-					}
-				})
+		}).catch((error) => {
+			reject(error)
+		})	
 
-						
-			} catch(err) {
-				console.log(`ERROR: ${err.message}`)
-			}
-		})
-
-		data = {origin, destination, distance, duration, steps, hourly_forcast }
-		return callback(null, data)
-	} catch(err){
-		console.log(`ERROR: ${err.message}`)
-	}
+	})
 
 }

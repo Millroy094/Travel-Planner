@@ -17,11 +17,19 @@ const request = require('request')
 const appid = '82aea3af796e9d2b3818f9688c420fa5'
 
 
-exports.getForecast = (lat, lng, callback) => {
-	apiCall(lat, lng, (err, weather) => {
-		if (err) return callback(err)
-		return callback(null, weather)
+exports.getForecast = (lat, lng) => {
+	
+	return new Promise((resolve, reject) => {
+
+		apiCall(lat, lng).then((result) => {
+			resolve(result)
+		}).catch((error) => {
+			reject(error)
+		})
+
 	})
+
+
 }
 
 
@@ -31,14 +39,20 @@ exports.getForecast = (lat, lng, callback) => {
  * @param {apiCallback} callback - the callback run when api call is completed
  * @returns {null} no return value
  */
-function apiCall(lat, lng, callback) {
-	const firstIndex = 0
-	const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}` 
-	console.log(url)
-	request.get(url, (err, res, body) => {
-		if (err) return callback(new Error('Forcast.IO error'))
-		const json = JSON.parse(body)
-		const weather = json.hourly
-		return callback(null, weather)
+function apiCall(lat, lng) {
+	return new Promise((resolve, reject) => {
+		const firstIndex = 0
+		const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}`
+		console.log(url)
+		request.get(url, (err, res, body) => {
+			if (err) reject(new Error('Forcast.IO error'))
+			const json = JSON.parse(body)
+			const weather = json.hourly
+			resolve(weather)
+		})
 	})
+	
+	 
+	
+
 }

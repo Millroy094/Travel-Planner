@@ -7,16 +7,13 @@ const origin = String(readline.question('start address: ')).trim()
 const destination = String(readline.question('Destination address: ')).trim()
 
 
-tripPlannerApi.getData(origin, destination, (err, data) => {
-	try {
-		if (err) throw err
-		console.log(data)
-	} catch(err) {
-		console.log(`ERROR: ${err.message}`)
-	}
+tripPlannerApi.getData(origin, destination).then((result)=>{
+
+	console.log(result)
+
+}).catch((error) => {
+	console.log(error)
 })
-
-
 
 
 
