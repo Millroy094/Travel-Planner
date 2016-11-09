@@ -13,7 +13,13 @@ exports.getData = (origin, destination) => {
 
 		Promise.all([distance(origin, destination), duration(origin, destination), steps(origin, destination), weather(origin, destination)]).then( (values) => {
 
-			console.log(values)
+
+			let data
+
+			data = { Distance: values[0], Duration: values[1], Directions: values[2], Weather : values[3]}
+
+			resolve(data)
+			
 		}).catch((error) => {
 			reject(error)
 		})

@@ -4,20 +4,14 @@
  * directions module.
  * @module directions
  */
-/**
- * Callback used by apiCall
- * @callback apiCallback
- * @param {error} err - error returned (null if no error)
- * @param {data} route - the data returned as an object
- */
+
 const request = require('request')
 const replaceAll = require('replaceall')
 /**
  * returns the driving distance between two locations
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
- * @param {apiCallback} callback - the callback run when api call is completed
- * @returns {null} no return value
+ * @returns {Promise} resolves the distance from origin to destination
  */
 exports.getDistance = (origin, destination) => {
 	
@@ -38,7 +32,7 @@ exports.getDistance = (origin, destination) => {
  * returns the driving duration between two locations
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
- * @returns {Promise} returns the duration or an error message
+ * @returns {Promise} resolves the distance from origin to destination
  */
 
 exports.getDuration = (origin, destination) => {
@@ -57,8 +51,7 @@ exports.getDuration = (origin, destination) => {
  * returns the lattitude and longitude of the location
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
- * @param {apiCallback} callback - the callback run when api call is completed
- * @returns {null} no return value
+ * @returns {Promise} resolves the coordinates of the destination
  */
 
 exports.getCoordinates = (origin, destination) => {
@@ -79,11 +72,10 @@ exports.getCoordinates = (origin, destination) => {
  * returns the driving steps between two locations
  * @param {string} origin - the starting location for the journey
  * @param {string} destination - the ending location for the journey
- * @param {apiCallback} callback - the callback run when api call is completed
- * @returns {null} no return value
+ * @returns {Promise} resolves an array of directions 
  */
 
-exports.getDirections = (origin, destination, callback) => {
+exports.getDirections = (origin, destination) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -92,7 +84,7 @@ exports.getDirections = (origin, destination, callback) => {
 			steps.push("Directions to get there:")
 			
 			for (let step in result.steps){	
-				steps.push(replaceAll("</b>", "",replaceAll("<b>", "",result.steps[step].html_instructions)))
+				steps.push(replaceAll("</div>", "", replaceAll('<div style="font-size:0.9em">', "", replaceAll("</b>", "",replaceAll("<b>", "",result.steps[step].html_instructions)))))
 			}
 
 			resolve(steps)
