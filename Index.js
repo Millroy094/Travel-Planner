@@ -44,11 +44,14 @@ app.get('/data', function(req, res) {
 		/* We  send the response code and body. Finally we signal the end of the response. */
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('Allow', 'GET, POST')
-		res.send(data)
+		res.status(data.status).send({ message: data.message, data : data.data})
 		res.end()
 
 	}).catch((error) => {
-		console.log(error)
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('Allow', 'GET, POST')
+		res.status(error.status).send({message: error.message})
+		res.end()
 	})
 
 

@@ -8,6 +8,8 @@
 const request = require('request')
 const replaceAll = require('replaceall')
 
+
+
 /**
  * returns the driving distance between two locations
  * @param {string} origin - the starting location for the journey
@@ -117,10 +119,13 @@ function apiCall(origin, destination) {
 			if (err) reject(new Error('Google API error'))
 				const json = JSON.parse(body)
 			
-			if (json.status !== 'OK') reject(new Error('invalid location'))
-				const route = json.routes[firstIndex].legs[firstIndex]
+			if (json.status !== 'OK' ) reject(new Error('invalid location'))
 			
-			resolve(route)
+			else {
+				const route = json.routes[firstIndex].legs[firstIndex]
+				resolve(route)
+			}
+
 		})
 
 	})

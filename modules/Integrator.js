@@ -2,6 +2,7 @@
 
 const directions = require('./directions')
 const forecast = require('./weather')
+const globals = require('./globals')
 
 /**
  * Integrator module.
@@ -26,12 +27,16 @@ exports.getData = (origin, destination) => {
 
 			let data
 
-			data = { Distance: values[0], Duration: values[1], Directions: values[2], Weather : values[3]}
+			data = { status: globals.status.ok, format: globals.format.json, data: { Distance: values[0], Duration: values[1], Directions: values[2], Weather : values[3]}}
 
 			resolve(data)
 
 		}).catch((error) => {
-			reject(error)
+			reject({ status: globals.status.notFound,
+					 format: globals.format.json,
+					 message: `${error}`
+
+			})
 		})
 
 
