@@ -1,15 +1,11 @@
 'use strict'
 
 
-/* import the 'restify' module and create an instance. */
-const restify = require('restify')
-const server = restify.createServer()
+/* import the 'express' module and create an instance. */
+const express = require('express')
+const app = express()
 
 
-/* import the required plugins to parse the body and auth header. */
-server.use(restify.fullResponse())
-server.use(restify.bodyParser())
-server.use(restify.authorizationParser())
 
 /* import our custom module. */
 const Integrator = require('./modules/Integrator.js')
@@ -33,12 +29,12 @@ const mime = {
 const defaultPort = 8080
 
 /* if we receive a GET request for the base URL redirect to /data */
-server.get('/', function(req, res, next) {
+app.get('/', function(req, res, next) {
 	res.redirect('/data', next)
 })
 
 /* this route provides a URL for the 'data' collection.  */
-server.get('/data', function(req, res) {
+app.get('/data', function(req, res) {
 	
 	const origin = req.query.origin
 	const destination =req.query.destination
@@ -60,7 +56,7 @@ server.get('/data', function(req, res) {
 
 
 const port = process.env.PORT || defaultPort
-server.listen(port, function(err) {
+app.listen(port, function(err) {
 	if (err) {
 		console.error(err)
 	} else {
@@ -68,25 +64,3 @@ server.listen(port, function(err) {
 	}
 })
 
-
-
-
-/* const tripPlannerApi = require('./modules/integrator')
-
-const origin = String(readline.question('start address: ')).trim()
-const destination = String(readline.question('Destination address: ')).trim()
-
-
-tripPlannerApi.getData(origin, destination).then((result)=>{
-
-	console.log(result)
-
-}).catch((error) => {
-	console.log(error)
-})
-
-
-
-console.log('EOF')
-
-*/
