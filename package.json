@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch ."
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,6 @@
   "author": "Millroy S Fernandes",
   "license": "ISC",
   "dependencies": {
-
     "readline-sync": "^1.2.21",
     "request": "^2.67.0",
     "sync-request": "^2.1.0"
@@ -25,5 +24,8 @@
   "bugs": {
     "url": "https://gitlab.com/Millroy098/Travel-Planner/issues"
   },
-  "homepage": "https://gitlab.com/Millroy098/Travel-Planner#README"
+  "homepage": "https://gitlab.com/Millroy098/Travel-Planner#README",
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
 }
