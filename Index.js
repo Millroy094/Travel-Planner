@@ -40,18 +40,32 @@ server.get('/', function(req, res, next) {
 /* this route provides a URL for the 'data' collection.  */
 server.get('/data', function(req, res) {
 	
+	const origin = req.query.origin
+	const destination =req.query.destination
+
 	Integrator.getData(origin, destination).then((data)=>{
 
 		/* We  send the response code and body. Finally we signal the end of the response. */
-		res.setHeader('content-type', data.format)
+		res.setHeader('content-type', 'application/json')
 		res.setHeader('Allow', 'GET, POST')
-		res.json(data.status, {message: data.message, data: data.data})
+		res.send(data)
+		res.end()
 
 	}).catch((error) => {
 		console.log(error)
 	})
 
 
+})
+
+
+const port = process.env.PORT || defaultPort
+server.listen(port, function(err) {
+	if (err) {
+		console.error(err)
+	} else {
+		console.log('App is ready at : ' + port)
+	}
 })
 
 
