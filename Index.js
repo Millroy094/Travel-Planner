@@ -42,13 +42,13 @@ app.get('/data', function(req, res) {
 	Integrator.getData(origin, destination).then((data)=>{
 
 		/* We  send the response code and body. Finally we signal the end of the response. */
-		res.setHeader('content-type', 'application/json')
+		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST')
 		res.status(data.status).send({ message: data.message, data : data.data})
 		res.end()
 
 	}).catch((error) => {
-		res.setHeader('content-type', 'application/json')
+		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST')
 		res.status(error.status).send({message: error.message})
 		res.end()
@@ -59,6 +59,8 @@ app.get('/data', function(req, res) {
 
 
 const port = process.env.PORT || defaultPort
+
+
 app.listen(port, function(err) {
 	if (err) {
 		console.error(err)
