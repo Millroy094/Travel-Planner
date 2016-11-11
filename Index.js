@@ -39,17 +39,35 @@ app.get('/data', function(req, res) {
 	const origin = req.query.origin
 	const destination =req.query.destination
 
+
+	if((origin === undefined) || (destination === undefined) ) {
+
+		res.setHeader('content-type', globals.format.json)
+		res.setHeader('Allow', 'GET')
+		res.status(globals.status.badRequest).send({ message: 'No origin/destination queried'})
+		res.end()
+
+	}
+
+	if((!(isNaN(origin)) || !(isNaN(destination)))) {
+
+		res.setHeader('content-type', globals.format.json)
+		res.setHeader('Allow', 'GET')
+		res.status(globals.status.badRequest).send({ message: 'Origin or Destination is invalid'})
+		res.end()
+
+	}
+
 	Integrator.getData(origin, destination).then((data)=>{
 
-		/* We  send the response code and body. Finally we signal the end of the response. */
 		res.setHeader('content-type', data.format)
-		res.setHeader('Allow', 'GET, POST')
+		res.setHeader('Allow', 'GET')
 		res.status(data.status).send({ message: data.message, data : data.data})
 		res.end()
 
 	}).catch((error) => {
 		res.setHeader('content-type', error.format)
-		res.setHeader('Allow', 'GET, POST')
+		res.setHeader('Allow', 'GET')
 		res.status(error.status).send({message: error.message})
 		res.end()
 	})
