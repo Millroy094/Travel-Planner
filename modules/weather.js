@@ -2,6 +2,10 @@
 
 const request = require('request')
 
+
+const initial = 0
+const max = 8
+
 /**
  * weather module.
  * @module weather
@@ -41,13 +45,23 @@ exports.getForecast = (lat, lng) => {
  */
 function apiCall(lat, lng) {
 	return new Promise((resolve, reject) => {
-		const firstIndex = 0
-		const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}`
+		
+		const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}?exclude=daily,minutely,flags&units=si`
 		console.log(url)
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Forcast.IO error'))
 			const json = JSON.parse(body)
-			const weather = json.hourly
+			const weather = json
+
+			let hourly =[]
+
+			for (let i=initial; i<max; i++){
+				hourly.push(weather.hourly.data[i])	
+
+			}
+
+			weather.hourly.data = hourly
+
 			resolve(weather)
 		})
 	})
