@@ -27,7 +27,7 @@ exports.getData = (origin, destination) => {
 
 			let data
 
-			data = { status: globals.status.ok, format: globals.format.json, data: { Distance: values[0], Duration: values[1], Directions: values[2], Weather : values[3]}}
+			data = { status: globals.status.ok, format: globals.format.json, data: { Origin: origin, Destination: destination, Distance: values[0], Duration: values[1], Directions: values[2], Weather : values[3]}}
 
 			resolve(data)
 
@@ -35,7 +35,6 @@ exports.getData = (origin, destination) => {
 			reject({ status: globals.status.notFound,
 					 format: globals.format.json,
 					 message: `${error}`
-
 			})
 		})
 

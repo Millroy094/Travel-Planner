@@ -17,6 +17,7 @@
   "author": "Millroy S Fernandes",
   "license": "ISC",
   "dependencies": {
+    "basic-auth": "^1.0.4",
     "readline-sync": "^1.2.21",
     "request": "^2.67.0",
     "sync-request": "^2.1.0"

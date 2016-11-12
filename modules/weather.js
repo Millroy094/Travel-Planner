@@ -44,16 +44,20 @@ exports.getForecast = (lat, lng) => {
  * @returns {Promise} resolves to a JSON weather object or rejects for an error
  */
 function apiCall(lat, lng) {
+	
 	return new Promise((resolve, reject) => {
-		
+
 		const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}?exclude=daily,minutely,flags&units=si`
 		console.log(url)
+		
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Forcast.IO error'))
 			const json = JSON.parse(body)
 			const weather = json
 
 			let hourly =[]
+
+			/* Loops through hourly weather data to get 8 hour data  */
 
 			for (let i=initial; i<max; i++){
 				hourly.push(weather.hourly.data[i])	
