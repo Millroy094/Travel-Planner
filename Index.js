@@ -4,31 +4,44 @@
 /* import the 'express' module and create an instance. */
 const express = require('express')
 const app = express()
+
+/* Used to make an instance of basic authentication functionality */
 const auth = require('basic-auth')
-var bodyParser = require('body-parser')
 
+/* Object that allows to parse the body */
+const bodyParser = require('body-parser')
 
+/* lets the app to parse JSON body */
 app.use(bodyParser.json())
 
 
-/* import our custom module. */
+/* imports my custom module. */
 const preferences = require('./modules/preferences.js')
 const globals = require('./modules/globals')
 
+/* The port to which my API will be listening on */
 const defaultPort = 8080
 
-/* if we receive a GET request for the base URL redirect to /data */
+/* Retrives all preferences to local preferences list */
+preferences.initialize()
+
+
+/* if we receive a GET request for the base URL redirect to /preferences */
 app.get('/', function(req, res, next) {
 	res.redirect('/preferences', next)
 })
 
-/* this route provides a URL for the 'data' collection.  */
+/* this route provides a URL for the 'preferences' collection.  */
+
 app.get('/preferences', function(req, res) {
 	
+	/* gets the host from the request */
 	const host = req.headers.host
+
+	/* gets a list of all the preferences */
 	const data = preferences.getAll(host)
-	console.log(data)
-	/* We  send the response code and body. Finally we signal the end of the response. */
+	
+	/* Sends a response to the client */
 	res.setHeader('content-type', data.format)
 	res.setHeader('Allow', 'GET, POST')
 	res.status(data.status).send({message: data.message, data: data.data})
@@ -36,10 +49,15 @@ app.get('/preferences', function(req, res) {
 
 })
 
+/* this route will take preference id as a parameter and respond with JSON representation of journey & weather information */
+
 app.get('/preferences/:preferenceID', function(req, res) {
 	
+	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 	
+	/* if data was returned correctly then send a response, if there was an error client is feedback */
+
 	preferences.getByID(preferenceID).then((data)=>{
 
 		res.setHeader('content-type', data.format)
@@ -55,9 +73,14 @@ app.get('/preferences/:preferenceID', function(req, res) {
 	})
 })
 
+/* this route will post preferences into the api database and create a new resource,  it then feedback with a response claiming weather the creation was successful or not */
+
 app.post('/preferences', function(req, res) {
 
+	/* Gets the authentication information and stores it in an object */
 	const user = auth(req)
+
+	/* It will either respond with an error if unsucessful else with with the information to the link to the new reasource created */
 
 	preferences.addNew(user, req.body).then((data) => {
 			
@@ -88,12 +111,18 @@ app.post('/preferences', function(req, res) {
 
 })
 
-/* The PUT method is used to 'update' a named resource. This is not only used to update a named resource that already exists but is also used to create a NEW RESOURCE at the named URL. It's important that you understand how this differs from a POST request. */
+/* This route will update existing resources*/
+
 app.put('/preferences/:preferenceID', function(req, res) {
 	
+	/* Gets the authentication information and stores it in an object */
 	const user = auth(req)
+
+	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
+
+	/* It will either update it or send an error response*/
 	preferences.updateByID(user, req.body, preferenceID).then((data) => {
 		
 		res.setHeader('content-type', data.format)
@@ -112,12 +141,16 @@ app.put('/preferences/:preferenceID', function(req, res) {
 
 })
 
-/* The DELETE method removes the resource at the specified URL. */
+/* This route will delete the specified resource  */
 app.delete('/preferences/:preferenceID', function(req, res) {
 
+	/* Gets the authentication information and stores it in an object */
 	const user = auth(req)
+
+	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
+	/* It will either delete it or send an error response*/
 	preferences.deleteByID(user, preferenceID).then((data) => {
 
 		res.setHeader('content-type', data.format)

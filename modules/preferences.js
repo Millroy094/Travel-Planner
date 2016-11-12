@@ -4,6 +4,7 @@
 
 const globals = require('./globals')
 const Integrator = require('./Integrator')
+const Prefer = require('./preferenceSchema')
 
 
 
@@ -63,6 +64,16 @@ function validateUpdateJson(json) {
 
 	/* otherwise return true */
 	return true
+}
+
+exports.initialize = function(){
+
+	Prefer.find({}, (err, result) => {
+
+		preferences = result
+
+	})
+
 }
 
 
@@ -166,9 +177,32 @@ exports.addNew = function(user, body) {
 
 		if(!foundPreference) {
 
+
 			const id = `${journey}`
 			const modified = new Date()
-			/* We now create an object and push it onto the array. Note the use of ECMAScript 6 Object Literal Property Value Shorthand. If the object key matches the variable we are storing the value in we only need to specify the variable. */
+
+			const prefer = new Prefer({
+
+				id: id,
+				modified: modified,
+				origin: origin,
+				destination: destination
+			})
+
+			prefer.save( (err, done) => {
+
+				if(err) {
+
+					reject({
+						status: globals.status.badRequest,
+						format: globals.format.json,
+						message: `${error}`
+					})
+				}
+
+
+			})
+
 			const newPreference = {id, modified, origin, destination}
 			preferences.push(newPreference)
 			
@@ -216,6 +250,20 @@ exports.deleteByID = function(user, preferenceID) {
 		for (let preference in preferences){
 			
 			if(preferences[preference].id === preferenceID) {
+				
+				Prefer.findOneAndRemove({ id: `${preferenceID}`}, (err) => {
+
+					if(err) {
+						reject({
+							status: globals.status.notFound,
+							format: globals.format.json,
+							message: `${err}`
+						})
+
+					}
+
+				})
+
 				preferences= removeItem(preference)
 				const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
 				resolve(data)
@@ -271,9 +319,24 @@ exports.updateByID = function(user, body, preferenceID){
 
 			if(preferences[preference].id === preferenceID){
 				
+				const modified = new Date();
+
+				Prefer.findOneAndUpdate({ id: `${preferenceID}`}, {origin: origin, destination: destination, modified: modified}, (err, done) => {
+
+					if(err) {
+						reject({
+							status: globals.status.notFound,
+							format: globals.format.json,
+							message: `${err}`
+						})
+
+					}
+
+				})
+
 				preferences[preference].origin = origin
 				preferences[preference].destination = destination 
-
+				preferences[preference].modified = modified
 				const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated` }
 
 				resolve(data)
