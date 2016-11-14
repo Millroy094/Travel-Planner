@@ -46,5 +46,15 @@ describe('Check weather module returns accurate data', function() {
 		})
 	})
 
+	it('Should return the current state of the weather', function (done) {
+		forecast.getForecast(51.55571219999999,-1.7799789).then((data)=>{
+			expect(data.hourly.data.currently.summary).toEqual('clear')
+			done()
+		}).catch((error)=>{
+			console.log(error)
+			done()
+		})
+	})
+
 
 })
