@@ -9,7 +9,7 @@ describe('Check weather module returns accurate data', function() {
 
 	direction.__set__('apiCall', function(origin, destination) {
 
-		return  new Promise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
 			
 				const firstIndex = 0
 				

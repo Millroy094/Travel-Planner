@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for spec/directions-spec.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">spec/</a> directions-spec.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12.9% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/31</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">13.33% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/30</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict'
+&nbsp;
+const fs = require('fs')
+const rewire = require('rewire')
+const direction = rewire('../modules/directions')
+&nbsp;
+describe('Check weather module returns accurate data', <span class="fstat-no" title="function not covered" >function() {</span>
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	direction.__set__('apiCall', <span class="fstat-no" title="function not covered" >function(origin, destination) {</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		return new Promise((resolve, reject) =&gt; {</span>
+			
+<span class="cstat-no" title="statement not covered" >				const firstIndex = 0</span>
+				
+<span class="cstat-no" title="statement not covered" >				const body = fs.readFileSync('spec/direction/bham_to_swindon.json', 'utf8')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >				const json = JSON.parse(body)</span>
+		
+<span class="cstat-no" title="statement not covered" >				if (json.status !== 'OK' ) <span class="cstat-no" title="statement not covered" >reject(new Error('invalid location'))</span></span>
+				
+				else {
+<span class="cstat-no" title="statement not covered" >					const route = json.routes[firstIndex].legs[firstIndex]</span>
+<span class="cstat-no" title="statement not covered" >					resolve(route)</span>
+				}
+&nbsp;
+			})
+&nbsp;
+		})
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	it('Should return the right distance', <span class="fstat-no" title="function not covered" >function (done) {</span></span>
+<span class="cstat-no" title="statement not covered" >		direction.getDistance('Birmingham','Swindon').then((data)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >			expect(data).toEqual('149 km')</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		}).catch((error)=&gt;{
+<span class="cstat-no" title="statement not covered" >			console.log(error)</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		})
+	})
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	it('Should return the right duration', <span class="fstat-no" title="function not covered" >function (done) {</span></span>
+<span class="cstat-no" title="statement not covered" >		direction.getDuration('Birmingham','Swindon').then((data)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >			expect(data).toEqual('1 hour 43 mins')</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		}).catch((error)=&gt;{
+<span class="cstat-no" title="statement not covered" >			console.log(error)</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		})
+	})
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	it('Should return the right number of directions', <span class="fstat-no" title="function not covered" >function (done) {</span></span>
+<span class="cstat-no" title="statement not covered" >		direction.getDuration('Birmingham','Swindon').then((data)=&gt;{</span>
+<span class="cstat-no" title="statement not covered" >			expect(data.size()).toEqual(24)</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		}).catch((error)=&gt;{
+<span class="cstat-no" title="statement not covered" >			console.log(error)</span>
+<span class="cstat-no" title="statement not covered" >			done()</span>
+		})
+	})
+&nbsp;
+&nbsp;
+})</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Nov 14 2016 15:36:03 GMT+0000 (GMT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

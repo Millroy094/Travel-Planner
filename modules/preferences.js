@@ -3,8 +3,10 @@
 /* Module to manage users */
 
 const globals = require('./globals')
-const Integrator = require('./Integrator')
+const forecast = require('./weather')
+const directions = require('./directions')
 const Prefer = require('./preferenceSchema')
+const persistence = require('./persistence')
 
 
 
@@ -66,12 +68,15 @@ function validateUpdateJson(json) {
 	return true
 }
 
-exports.initialize = function(){
+exports.initialize = () => {
 
-	Prefer.find({}, (err, result) => {
+	persistence.getAllPreferences().then((data)=>{
 
-		preferences = result
+		preferences = data
 
+	}).catch((error) =>{
+
+		console.log(error)
 	})
 
 }
@@ -100,11 +105,31 @@ exports.getByID = function(preferenceID) {
 		}
 		
 		else {
-		
-			Integrator.getData(foundPreference.origin, foundPreference.destination).then((data)=>{
-				resolve(data)
-			}).catch((error) => {
-				reject(error)
+			
+			const origin = foundPreference.origin
+			const destination = foundPreference.destination
+
+			directions.getDistance(origin, destination).then((data)=>{
+				this.distance = data
+				return directions.getDuration(origin, destination)
+			}).then((data)=>{
+				this.duration = data
+				return directions.getDirections(origin, destination)
+			}).then((data)=>{
+				this.steps = data
+				return directions.getCoordinates(origin, destination)
+			}).then((data)=> {
+				return forecast.getForecast(data.lat, data.lng)
+			}).then((data)=>{
+				this.weather = data
+				resolve ({status: globals.status.ok, format: globals.format.json, 
+					data : { Origin: origin, Destination: destination, Distance: this.distance, Duration: this.duration, Directions: this.steps, Weather : this.weather}
+				})
+			}).catch((error)=>{
+				reject({status: globals.status.notFound, 
+					format: globals.format.json, 
+					message: `${error}`
+				})
 			})
 
 		}
@@ -141,7 +166,6 @@ exports.addNew = function(user, body) {
 	
 	return new Promise((resolve,reject) => {
 
-		/* The first parameter should contain the authorization data. We check that it contains an object called 'basic' */
 		if (user === undefined) {
 			reject ({
 				status: globals.status.unauthorized,
@@ -149,7 +173,7 @@ exports.addNew = function(user, body) {
 				message: 'missing basic auth'
 			})
 		}
-		/* In this simple example we have hard-coded the username and password. You should be storing this somewhere are looking it up. */
+		
 		if (user.name !== 'testuser' || user.pass !== 'p455w0rd') {
 			reject ({
 				status: globals.status.unauthorized,
@@ -159,7 +183,7 @@ exports.addNew = function(user, body) {
 		}
 
 		const valid = validateNewJson(body)
-		/* If the 'validateJson()' function returns 'false' we need to return an error. */
+		
 		if (valid === false) {
 			reject ({
 				status: globals.status.badRequest,
@@ -181,35 +205,20 @@ exports.addNew = function(user, body) {
 			const id = `${journey}`
 			const modified = new Date()
 
-			const prefer = new Prefer({
 
-				id: id,
-				modified: modified,
-				origin: origin,
-				destination: destination
-			})
-
-			prefer.save( (err, done) => {
-
-				if(err) {
-
-					reject({
-						status: globals.status.badRequest,
-						format: globals.format.json,
-						message: `${error}`
+			persistence.savePreference({id: id, modified: modified, origin: origin, destination: destination}).then((data) =>{
+				const newPreference = {id, modified, origin, destination}
+				preferences.push(newPreference)
+				const result = { status: globals.status.created, format: globals.format.json, message: "Preference created", data : newPreference}
+				resolve(result)
+			}).catch((error)=>{
+				reject({
+					status: globals.status.badRequest,
+					format: globals.format.json,
+					message: `${error}`
 					})
-				}
-
-
 			})
 
-			const newPreference = {id, modified, origin, destination}
-			preferences.push(newPreference)
-			
-			const data = { status: globals.status.created, format: globals.format.json, message: "Preference created", data : newPreference}
-			resolve(data)
-
-	
 		}
 
 		else {
@@ -245,37 +254,40 @@ exports.deleteByID = function(user, preferenceID) {
 			})
 		}
 		
-
+        const foundPreference = preferences.find( function(value) {
+			return value.id === preferenceID
+		})
+		
+		if (!foundPreference) {
+			reject({
+				status: globals.status.notFound,
+				format: globals.format.json,
+				message: 'Preference not in list'
+			})
+		}
 
 		for (let preference in preferences){
 			
 			if(preferences[preference].id === preferenceID) {
 				
-				Prefer.findOneAndRemove({ id: `${preferenceID}`}, (err) => {
+				
+				persistence.deleteByID(preferenceID).then(()=>{
 
-					if(err) {
-						reject({
-							status: globals.status.notFound,
-							format: globals.format.json,
-							message: `${err}`
-						})
+					preferences= removeItem(preference)
+					const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
+					resolve(data)
 
-					}
+				}).catch((error)=>{
+					reject({
+					status: globals.status.notFound,
+					format: globals.format.json,
+					message: `${error}`
+					})
 
 				})
 
-				preferences= removeItem(preference)
-				const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
-				resolve(data)
 			}
 		}
-
-		const data = { status: globals.status.notFound, format: globals.format.json, message: `Preference ${preferenceID} not found`}
-		reject(data)
-		
-
-
-
 
 	})
 
@@ -312,8 +324,22 @@ exports.updateByID = function(user, body, preferenceID){
 			})
 		}
 
+		const foundPreference = preferences.find( function(value) {
+			return value.id === preferenceID
+		})
+		
+		if (!foundPreference) {
+			reject({
+				status: globals.status.notFound,
+				format: globals.format.json,
+				message: 'Preference not in list'
+			})
+		}
+
+
 
 		const {origin, destination} = body
+		
 		
 		for (let preference in preferences){
 
@@ -321,40 +347,38 @@ exports.updateByID = function(user, body, preferenceID){
 				
 				const modified = new Date();
 
-				Prefer.findOneAndUpdate({ id: `${preferenceID}`}, {origin: origin, destination: destination, modified: modified}, (err, done) => {
+				persistence.updateByID({id: preferenceID, modified: modified, origin: origin, destination: destination}).then(()=>{
+					
+					preferences[preference].origin = origin
+					preferences[preference].destination = destination 
+					preferences[preference].modified = modified
+					const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated` }					
+					resolve(data)
 
-					if(err) {
-						reject({
-							status: globals.status.notFound,
-							format: globals.format.json,
-							message: `${err}`
-						})
 
-					}
+				}).catch((error)=>{
+					reject({
+						status: globals.status.notFound,
+						format: globals.format.json,
+						message: `${error}`
+					})
 
 				})
 
-				preferences[preference].origin = origin
-				preferences[preference].destination = destination 
-				preferences[preference].modified = modified
-				const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated` }
-
-				resolve(data)
 			}
 			
+		}
+		
 
-			}
-
-			reject({
-			status: globals.status.notFound,
-			format: globals.format.json,
-			message: `preference not found`
-		})
 	})
 
 }
 
-
+/**
+ * returns a new list of preferences by deleting the one specified
+ * @param {Integer} preference - the index of the preference to delete
+ * @returns {array} a new list of preferences with the one specified as parameter removed
+ */
 
 
 function removeItem(preference) {
@@ -365,4 +389,6 @@ function removeItem(preference) {
 	}
 	return newPreferences
 }
+
+
 

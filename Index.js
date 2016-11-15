@@ -62,7 +62,7 @@ app.get('/preferences/:preferenceID', function(req, res) {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET')
-		res.status(data.status).send({ message: data.message, data : data.data})
+		res.status(data.status).send({ data : data.data})
 		res.end()
 
 	}).catch((error) => {
@@ -124,17 +124,15 @@ app.put('/preferences/:preferenceID', function(req, res) {
 
 	/* It will either update it or send an error response*/
 	preferences.updateByID(user, req.body, preferenceID).then((data) => {
-		
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
 		res.status(data.status).send({message : data.message})
 		
 
 	}).catch((error) => {
-		
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.status(error.status).send(error.message)
+		res.status(error.status).send({message : error.message})
 		
 
 	})

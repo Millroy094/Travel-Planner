@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch ."
+    "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
+    "cover": "./node_modules/.bin/istanbul cover -x **spec/** jasmine-node spec"
+
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
   },
   "homepage": "https://gitlab.com/Millroy098/Travel-Planner#README",
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "jasmine-node": "^1.14.5"
   }
 }
