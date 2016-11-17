@@ -1,22 +1,19 @@
 'use strict'
 
 
-/* import the 'express' module and create an instance. */
-const express = require('express')
-const app = express()
+/* import the 'restify' module and create a server instance. */
+const restify = require('restify')
+const server = restify.createServer()
 
-/* Used to make an instance of basic authentication functionality */
-const auth = require('basic-auth')
-
-/* Object that allows to parse the body */
-const bodyParser = require('body-parser')
-
-/* lets the app to parse JSON body */
-app.use(bodyParser.json())
+/* import the required plugins to parse the body and auth header. */
+server.use(restify.fullResponse())
+server.use(restify.bodyParser())
+server.use(restify.queryParser())
+server.use(restify.authorizationParser())
 
 
 /* imports my custom module. */
-const preferences = require('./modules/preferences.js')
+const preferences = require('./preferences.js')
 const globals = require('./modules/globals')
 
 /* The port to which my API will be listening on */
@@ -27,13 +24,13 @@ preferences.initialize()
 
 
 /* if we receive a GET request for the base URL redirect to /preferences */
-app.get('/', function(req, res, next) {
+server.get('/', function(req, res, next) {
 	res.redirect('/preferences', next)
 })
 
 /* this route provides a URL for the 'preferences' collection.  */
 
-app.get('/preferences', function(req, res) {
+server.get('/preferences', function(req, res) {
 	
 	/* gets the host from the request */
 	const host = req.headers.host
@@ -44,14 +41,14 @@ app.get('/preferences', function(req, res) {
 	/* Sends a response to the client */
 	res.setHeader('content-type', data.format)
 	res.setHeader('Allow', 'GET, POST')
-	res.status(data.status).send({message: data.message, data: data.data})
+	res.send(data.status, {message: data.message, data: data.data})
 	res.end()
 
 })
 
 /* this route will take preference id as a parameter and respond with JSON representation of journey & weather information */
 
-app.get('/preferences/:preferenceID', function(req, res) {
+server.get('/preferences/:preferenceID', function(req, res) {
 	
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
@@ -62,27 +59,27 @@ app.get('/preferences/:preferenceID', function(req, res) {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET')
-		res.status(data.status).send({ data : data.data})
+		res.send(data.status, { data : data.data})
 		res.end()
 
 	}).catch((error) => {
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET')
-		res.status(error.status).send({message: error.message})
+		res.send(error.status, {message: error.message})
 		res.end()
 	})
 })
 
 /* this route will post preferences into the api database and create a new resource,  it then feedback with a response claiming weather the creation was successful or not */
 
-app.post('/preferences', function(req, res) {
+server.post('/preferences', function(req, res) {
 
 	/* Gets the authentication information and stores it in an object */
-	const user = auth(req)
+	const auth = req.authorization
 
 	/* It will either respond with an error if unsucessful else with with the information to the link to the new reasource created */
 
-	preferences.addNew(user, req.body).then((data) => {
+	preferences.addNew(auth, req.body).then((data) => {
 			
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST')
@@ -93,18 +90,18 @@ app.post('/preferences', function(req, res) {
 		}
 
 		if (data.data === undefined) {
-			res.status(data.status).send({message: data.message})
+			res.send(data.status, {message: data.message})
 			res.end()
 		}
 
-		res.status(data.status).send({message: data.message, data: data.data})
+		res.send(data.status, {message: data.message, data: data.data})
 		res.end()
 
 	}).catch((error) => {
 
-		res.setHeader('content-type', error.format)
+		res.setHeader('content-type', 'application/json')
 		res.setHeader('Allow', 'GET, POST')
-		res.status(error.status).send({message: error.message})
+		res.send(404, {message: error.message})
 		res.end()
 
 	})
@@ -113,26 +110,26 @@ app.post('/preferences', function(req, res) {
 
 /* This route will update existing resources*/
 
-app.put('/preferences/:preferenceID', function(req, res) {
+server.put('/preferences/:preferenceID', function(req, res) {
 	
 	/* Gets the authentication information and stores it in an object */
-	const user = auth(req)
+	const auth = req.authorization
 
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
 
 	/* It will either update it or send an error response*/
-	preferences.updateByID(user, req.body, preferenceID).then((data) => {
+	preferences.updateByID(auth, req.body, preferenceID).then((data) => {
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.status(data.status).send({message : data.message})
+		res.send(data.status, {message : data.message})
 		
 
 	}).catch((error) => {
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.status(error.status).send({message : error.message})
+		res.send(error.status, {message : error.message})
 		
 
 	})
@@ -140,30 +137,48 @@ app.put('/preferences/:preferenceID', function(req, res) {
 })
 
 /* This route will delete the specified resource  */
-app.delete('/preferences/:preferenceID', function(req, res) {
+server.del('/preferences/:preferenceID', function(req, res) {
 
 	/* Gets the authentication information and stores it in an object */
-	const user = auth(req)
+	const auth = req.authorization
 
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
 	/* It will either delete it or send an error response*/
-	preferences.deleteByID(user, preferenceID).then((data) => {
+	preferences.deleteByID(auth, preferenceID).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.status(data.status).send({message: data.message})
+		res.send(data.status, {message: data.message})
 		res.end()
 
 	}).catch((error)=>{
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.status(error.status).send({message: error.message})
+		res.send(error.status, {message: error.message})
 	})
 
 	
 
+})
+
+server.post('/Users', (req, res) => {
+
+	preferences.addUser(req.body).then((data)=>{
+
+		res.setHeader('content-type', data.format)
+		res.setHeader('Allow', 'GET, POST')
+		res.send(data.status, {message: data.message})
+		res.end()
+
+	}).catch((error)=>{
+
+		res.setHeader('content-type', error.format)
+		res.setHeader('Allow', 'GET, POST')
+		res.send(error.status, {message: error.message})
+		res.end()
+	})
 })
 
 
@@ -171,7 +186,7 @@ app.delete('/preferences/:preferenceID', function(req, res) {
 const port = process.env.PORT || defaultPort
 
 
-app.listen(port, function(err) {
+server.listen(port, function(err) {
 	if (err) {
 		console.error(err)
 	} else {

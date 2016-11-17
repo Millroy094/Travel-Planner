@@ -26,6 +26,8 @@ exports.getForecast = (lat, lng) => {
 	return new Promise((resolve, reject) => {
 
 		apiCall(lat, lng).then((result) => {
+			return processData(result)
+		}).then((result) => {
 			resolve(result)
 		}).catch((error) => {
 			reject(error)
@@ -52,25 +54,36 @@ function apiCall(lat, lng) {
 		
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Forcast.IO error'))
+			
 			const json = JSON.parse(body)
-			const weather = json
-
-			let hourly =[]
-
-			/* Loops through hourly weather data to get 8 hour data  */
-
-			for (let i=initial; i<max; i++){
-				hourly.push(weather.hourly.data[i])	
-
-			}
-
-			weather.hourly.data = hourly
-
-			resolve(weather)
+			resolve(json)
 		})
-	})
-	
-	 
-	
+	})	
 
 }
+
+/**
+ * @function proccessData
+ * @param {string} data - represents weather data
+ * @returns {Promise} resolves to a JSON weather object or rejects for an error
+ */
+
+function processData(data){
+	return new Promise((resolve, reject) => {
+
+		let hourly =[]
+
+		/* Loops through hourly weather data to get 8 hour data  */
+		for (let i=initial; i<max; i++){
+			hourly.push(data.hourly.data[i])	
+		}
+
+		data.hourly.data = hourly
+		resolve(data)
+	})
+
+}
+
+
+
+

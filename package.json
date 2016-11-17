@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
-    "cover": "./node_modules/.bin/istanbul cover -x **spec/** jasmine-node spec"
-
+    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/spec/** -x **index.js** -x **preferences.js** ./node_modules/.bin/jasmine-node spec"
   },
   "repository": {
     "type": "git",
@@ -20,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "basic-auth": "^1.0.4",
+    "bcrypt": "^0.8.7",
     "mongoose": "^4.6.7",
     "readline-sync": "^1.2.21",
     "request": "^2.67.0",

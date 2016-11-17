@@ -22,6 +22,8 @@ exports.getDistance = (origin, destination) => {
 	return new Promise((resolve, reject) => {
 
 		apiCall(origin, destination).then((result) => {
+			return refineData(result)
+		}).then((result)=>{	
 			resolve(result.distance.text)
 		}).catch((error) => {
 			reject(error)
@@ -43,6 +45,8 @@ exports.getDuration = (origin, destination) => {
 	return new Promise((resolve, reject) => {
 
 		apiCall(origin, destination).then((result) => {
+			return refineData(result)
+		}).then((result)=>{	
 			resolve(result.duration.text)
 		}).catch((error) => {
 			reject(error)
@@ -63,6 +67,8 @@ exports.getCoordinates = (origin, destination) => {
 	return new Promise((resolve, reject) => {
 
 		apiCall(origin, destination).then((result) => {
+			return refineData(result)
+		}).then((result)=>{
 			resolve(result.end_location)
 		}).catch((error) => {
 			reject(error)
@@ -84,6 +90,10 @@ exports.getDirections = (origin, destination) => {
 	return new Promise((resolve, reject) => {
 
 		apiCall(origin, destination).then((result) => {
+			
+			return refineData(result)
+		}).then((result)=>{
+
 			const steps = []
 			steps.push("Directions to get there:")
 			
@@ -111,23 +121,40 @@ exports.getDirections = (origin, destination) => {
 function apiCall(origin, destination) {
 	return  new Promise((resolve, reject) => {
 		
-		const firstIndex = 0
 		const url = `https://maps.googleapis.com/maps/api/directions/json?region=gb&origin=${origin}&destination=${destination}`
 		console.log(url)
 		
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Google API error'))
-				const json = JSON.parse(body)
-			
-			if (json.status !== 'OK' ) reject(new Error('invalid location'))
-			
-			else {
-				const route = json.routes[firstIndex].legs[firstIndex]
-				resolve(route)
-			}
+			const json = JSON.parse(body)
+			resolve(json)
 
 		})
 
 	})
 
 }
+
+/**
+ * @function refineData
+ * @param {string} data - represents direction data from origin to destination
+ * @returns {Promise} resolves to an Json object containing data about route or rejects for an error
+ */
+
+function refineData(data) {
+	return  new Promise((resolve, reject) => {
+		const firstIndex = 0
+		
+		if (data.status !== 'OK' ) reject(new Error('Invalid location'))
+			
+		else {
+			const route = data.routes[firstIndex].legs[firstIndex]
+			resolve(route)
+		}
+
+	})
+
+
+}
+
+
