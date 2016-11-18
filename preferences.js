@@ -440,8 +440,8 @@ function authenticate(auth){
 		authorization.validateHeader(auth).then((credentials)=>{
 			user = credentials
 			return persistence.getPassword(user.username)
-		}).then((credentials)=>{
-			user.storedHash = credentials[0].password
+		}).then((password)=>{
+			user.storedHash = password
 			return authorization.validateUser(user.password, user.storedHash)
 		}).then(()=>{
 			resolve()

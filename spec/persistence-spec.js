@@ -4,6 +4,16 @@ const persistence = require('../modules/persistence')
 
 describe('Check is preference module is store, retrive, modify, delete preferences', function() {
 
+	it('All preferences should be deleted', function (done) {
+
+		persistence.clearAllPreferences().then((data)=>{
+			expect(data).toEqual('All preferences deleted')
+			done()
+		}).catch((error)=>{
+			done()
+		})
+
+	})
 
 	it('Initially there should be no preferences stored', function (done) {
 
@@ -102,7 +112,74 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 			done()
 		})
 
-	}) 
+	})
+
+
+	it('Check if you user can be created', function (done) {
+
+		persistence.addAccount({username: 'Test', password: '12345'}).then((data)=>{
+			expect(data).toEqual('New user added')
+			done()
+		}).catch((error)=>{
+			done()
+		})
+
+	})
+
+	it('Check if error is thrown if the data passed is not complete', function (done) {
+
+		persistence.addAccount({username: 'Test'}).then((data)=>{
+			done()
+		}).catch((error)=>{
+			expect(error).toEqual('invalid user object')
+			done()
+		})
+
+	})	
+
+	it('Test should return username already exists', function (done) {
+
+		persistence.accountExists('Test').then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error).toEqual('username already exists')
+			done()
+		})
+
+	})
+
+	it('Test should return the right password', function (done) {
+
+		persistence.getPassword('Test').then((password)=>{
+			expect(password).toEqual('12345')
+			done()
+		}).catch((error)=>{
+			done()
+		})
+
+	})
+
+	it('Test should return an error saying invalid user', function (done) {
+
+		persistence.getPassword('Test').then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error).toEqual('invalid username')
+			done()
+		})
+
+	})
+
+	it('All users should be deleted', function (done) {
+
+		persistence.clearAllUsers().then((data)=>{
+			expect(data).toEqual('All users deleted')
+			done()
+		}).catch((error)=>{
+			done()
+		})
+
+	})		 
   
 
 })

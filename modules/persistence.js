@@ -3,6 +3,17 @@
 const Database = require('../Schema/preferenceSchema')
 
 
+exports.clearAllPreferences = () =>  new Promise ((resolve, reject) =>{
+
+	
+	Database.Preference.remove({}, (err)=>{
+		if(err) reject (`${err}`)
+		resolve ('All preferences deleted')
+	})
+	
+
+})
+
 exports.savePreference = preferInfo => new Promise ((resolve, reject) => {
 
 	if('id' in preferInfo && 'origin' in preferInfo && 'destination' && preferInfo && 'modified' in preferInfo )
@@ -13,7 +24,7 @@ exports.savePreference = preferInfo => new Promise ((resolve, reject) => {
 			
 			prefer.save( (err, preference) => {
 				if (err) {
-					reject(new Error('an error saving book'))
+					reject('an error saving preference')
 				}
 				resolve("Save Successful")
 			})
@@ -31,7 +42,7 @@ exports.getAllPreferences = () => new Promise ((resolve, reject) => {
 
 	Database.Preference.find({}, (err, preferences) => {
 
-		if (err) reject (new Error ('database error'))
+		if (err) reject ('database error')
 		if (!preferences.length) reject('No preferences found')
 		resolve(preferences)
 	})
@@ -44,7 +55,7 @@ exports.deleteByID = id => new Promise((resolve, reject) => {
 
 	Database.Preference.findOneAndRemove({ id: `${id}`}, (err) => {
 
-		if(err) reject(new Error ('Database error! preference could not be deleted'))
+		if(err) reject('Database error! preference could not be deleted')
 		resolve (`preference with id ${id} is deleted`)
 
 	})
@@ -76,7 +87,7 @@ function preferenceExists(preferenceID){
 
 		Database.Preference.find({id: preferenceID}, (err, preferences) => {
 
-		if (err) reject (new Error ('database error'))
+		if (err) reject ('database error')
 		if (!preferences.length) resolve ()
 		reject('Preference already exists')
 	})
@@ -87,6 +98,15 @@ function preferenceExists(preferenceID){
 
 }
 
+exports.clearAllUsers = () =>  new Promise ((resolve, reject) =>{
+
+	Database.Accounts.remove({}, (err)=>{
+		if(err) reject (`${err}`)
+		resolve ('All users deleted')
+	})
+
+})
+
 exports.addAccount = details => new Promise( (resolve, reject) => {
 	
 	if ('username' in details && 'password' in details ) {
@@ -94,7 +114,7 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 
 		user.save( (err, user) => {
 			if (err) {
-				reject(new Error('error creating account'))
+				reject('error creating account')
 			}
 			
 			resolve('New user added')
@@ -102,22 +122,23 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 		
 	}
 	else {
-		reject(new Error('invalid user object'))
+		reject('invalid user object')
 	}
 })
 
 exports.accountExists = username => new Promise( (resolve, reject) => {
 	Database.Accounts.find({username: username}, (err, findings) => {
-		if (findings.length) reject(new Error(`username already exists`))
+		if (findings.length) reject(`username already exists`)
 		resolve()
 	})
 })
 
 exports.getPassword = username => new Promise( (resolve, reject) => {
+	const firstIndex = 0
 	Database.Accounts.find({username: username}, (err, docs) => {
-		if (err) reject(new Error('database error'))
-		if (!docs.length) reject(new Error(`invalid username`))
-		resolve(docs) 
+		if (err) reject('database error')
+		if (!docs.length) reject(`invalid username`)
+		resolve(docs[firstIndex].password) 
 		
 		
 	})
