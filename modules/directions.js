@@ -122,7 +122,7 @@ function apiCall(origin, destination) {
 	return  new Promise((resolve, reject) => {
 		
 		const url = `https://maps.googleapis.com/maps/api/directions/json?region=gb&origin=${origin}&destination=${destination}`
-		console.log(url)
+
 		
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Google API error'))

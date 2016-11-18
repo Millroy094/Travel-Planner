@@ -50,7 +50,7 @@ function apiCall(lat, lng) {
 	return new Promise((resolve, reject) => {
 
 		const url = `https://api.darksky.net/forecast/${appid}/${lat},${lng}?exclude=daily,minutely,flags&units=si`
-		console.log(url)
+
 		
 		request.get(url, (err, res, body) => {
 			if (err) reject(new Error('Forcast.IO error'))

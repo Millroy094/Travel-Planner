@@ -2,7 +2,7 @@
 
 const persistence = require('../modules/persistence')
 
-describe('Check is preference module is store, retrive, modify, delete preferences', function() {
+describe('Check if the database is operating properly', function() {
 
 	it('All preferences should be deleted', function (done) {
 
@@ -20,7 +20,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.getAllPreferences().then((data)=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('No preferences found')	
+			expect(`${error}`).toEqual('Error: No preferences found')	
 			done()
 		})
 
@@ -45,7 +45,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.savePreference({id: 'Testing', modified: new Date().toString(), origin: 'Swindon', destination: 'Birmingham'}).then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('Preference already exists')			
+			expect(`${error}`).toEqual('Error: Preference already exists')			
 			done()
 
 		})
@@ -56,7 +56,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.savePreference({id: 'Testing1', modified: new Date().toString(), destination: 'Birmingham'}).then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('Invalid preference object')
+			expect(`${error}`).toEqual('Error: Invalid preference object')
 			done()
 
 		})
@@ -81,7 +81,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.updateByID({id: 'Testing', modified: new Date().toString(), destination: 'Birmingham'}).then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('Invalid preference object')
+			expect(`${error}`).toEqual('Error: Invalid preference object')
 			done()
 
 		})
@@ -131,7 +131,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.addAccount({username: 'Test'}).then((data)=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('invalid user object')
+			expect(`${error}`).toEqual('Error: invalid user object')
 			done()
 		})
 
@@ -142,7 +142,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.accountExists('Test').then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('username already exists')
+			expect(`${error}`).toEqual('Error: username already exists')
 			done()
 		})
 
@@ -164,7 +164,7 @@ describe('Check is preference module is store, retrive, modify, delete preferenc
 		persistence.getPassword('Test').then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('invalid username')
+			expect(error).toEqual('Error: invalid username')
 			done()
 		})
 
