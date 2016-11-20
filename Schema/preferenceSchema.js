@@ -9,10 +9,10 @@ const Schema = mongoose.Schema
 
 // createa a Preference schema
 const preferSchema = new Schema({
-	id: String,
-	modified: Date,
-	origin: String,
-	destination: String
+	id: { type: String, required: true, unique: true },
+	modified: { type: Date, required: true },
+	origin: { type: String, required: true },
+	destination: { type: String, required: true }
 })
 
 // create a model using the schema
@@ -23,8 +23,8 @@ exports.Preference = Prefer
 
 // createa a User schema
 const userSchema = new Schema({
-	username: String,
-	password: String
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true }
 })
 
 // create a model using the schema

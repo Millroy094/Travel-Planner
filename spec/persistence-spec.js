@@ -63,6 +63,7 @@ describe('Check if the database is operating properly', function() {
 
 	})
 
+
 	it('Should update data', function (done) {
 
 		persistence.updateByID({id: 'Testing', modified: new Date().toString(), origin: 'Coventry', destination: 'Birmingham'}).then((data)=>{
@@ -99,6 +100,8 @@ describe('Check if the database is operating properly', function() {
 		})
 
 	})
+
+
 
 
 	it('Should delete the preference', function (done) {
