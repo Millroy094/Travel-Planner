@@ -1,6 +1,6 @@
 'use strict'
 
-const Database = require('../Schema/preferenceSchema')
+const Database = require('../Schema/schema')
 
 
 exports.clearAllPreferences = () =>  new Promise ((resolve, reject) =>{
