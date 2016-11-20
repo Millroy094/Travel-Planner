@@ -207,7 +207,7 @@ exports.addNew = function(auth, body) {
 				reject ({
 					status: globals.status.badRequest,
 					format: globals.format.json,
-					message: 'Journey name already held by anthoner preference'
+					message: 'Journey name already held by another preference'
 				})
 			}
 
@@ -233,23 +233,7 @@ exports.addNew = function(auth, body) {
 exports.deleteByID = function(auth, preferenceID) {
 	
 	return new Promise((resolve,reject) => {
-		
-		// /* The first parameter should contain the authorization data. We check that it contains an object called 'basic' */
-		// if (auth.basic === undefined) {
-		// 	reject ({
-		// 		status: globals.status.unauthorized,
-		// 		format: globals.format.json,
-		// 		message: 'missing basic auth'
-		// 	})
-		// }
-		//  In this simple example we have hard-coded the username and password. You should be storing this somewhere are looking it up. 
-		// if (auth.basic.username !== 'testuser' || auth.basic.password !== 'p455w0rd') {
-		// 	reject ({
-		// 		status: globals.status.unauthorized,
-		// 		format: globals.format.json,
-		// 		message: 'invalid credentials'
-		// 	})
-		// }
+
 		authenticate(auth).then(()=>{
 	        const foundPreference = preferences.find( function(value) {
 				return value.id === preferenceID
@@ -297,21 +281,6 @@ exports.updateByID = function(auth, body, preferenceID){
 	
 	return new Promise((resolve, reject) => {
 
-		// if (auth.basic === undefined) {
-		// 	reject({
-		// 		status: globals.status.unauthorized,
-		// 		format: globals.format.json,
-		// 		message: 'missing basic auth'
-		// 	})
-		// }
-		
-		// if (auth.basic.username !== 'testuser' || auth.basic.password !== 'p455w0rd') {
-		// 	reject({
-		// 		status: globals.status.unauthorized,
-		// 		format: globals.format.json,
-		// 		message: 'invalid credentials'
-		// 	})
-		// }
 
 		authenticate(auth).then(()=>{
 
@@ -453,5 +422,28 @@ function authenticate(auth){
 
 
 }
+
+exports.deleteAllUsers = () => new Promise((resolve, reject) => {
+
+		persistence.clearAllUsers().then((data)=>{
+			resolve(data)
+		}).catch((error)=>{
+			reject(error)
+		})
+
+	})
+
+exports.deleteAllPreferences = () => new Promise((resolve, reject) => {
+
+		persistence.clearAllPreferences().then((data)=>{
+			resolve(data)
+		}).catch((error)=>{
+			reject(error)
+		})
+
+	})
+
+
+
 
 
