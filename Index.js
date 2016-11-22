@@ -20,7 +20,11 @@ const globals = require('./modules/globals')
 const defaultPort = 8080
 
 /* Retrives all preferences to local preferences list */
-preferences.initialize()
+preferences.initialize().then((data)=>{
+	console.log(` ${data} preferences initialized`)
+}).catch((error)=>{
+	console.log('No preferences found')
+})
 
 
 /* if we receive a GET request for the base URL redirect to /preferences */

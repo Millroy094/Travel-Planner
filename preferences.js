@@ -41,7 +41,7 @@ function validateNewJson(json) {
 
 function validateUpdateJson(json) {
 	if (json === undefined) {
-		//console.log('UNDEFINED')
+		
 		return false
 	}
 
@@ -55,18 +55,22 @@ function validateUpdateJson(json) {
 	}
 }
 
-exports.initialize = () => {
+exports.initialize = () =>  new Promise((resolve, reject)=>{
 
 	persistence.getAllPreferences().then((data)=>{
 
 		preferences = data
+		resolve(preferences.length)
 
 	}).catch((error) =>{
-
-		console.log(error)
+		reject(error)
 	})
 
-}
+})
+
+
+
+
 
 
 /* This public property contains a function that is passed a resource id and returns the associated list. */
@@ -232,31 +236,22 @@ exports.deleteByID = function(auth, preferenceID) {
 					message: 'Preference not in list'
 				})
 			}
+	
+			return persistence.deleteByID(preferenceID)
+			}).then(()=>{
 
-			for (let preference in preferences){
-				
-				if(preferences[preference].id === preferenceID) {
-					
-					
-					persistence.deleteByID(preferenceID).then(()=>{
+				preferences = preferences.filter(preference => preference.id !== preferenceID)
+				const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
+				resolve(data)
 
-						preferences= removeItem(preference)
-						const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
-						resolve(data)
+			}).catch((error)=>{
+				reject({
+				status: globals.status.notFound,
+				format: globals.format.json,
+				message: `${error}`
+				})
 
-					}).catch((error)=>{
-						reject({
-						status: globals.status.notFound,
-						format: globals.format.json,
-						message: `${error}`
-						})
-
-					})
-
-				}
-			}
-
-		})
+			})
 
 
 	})
@@ -339,23 +334,6 @@ exports.updateByID = function(auth, body, preferenceID){
 	})
 
 }	
-
-
-/**
- * returns a new list of preferences by deleting the one specified
- * @param {Integer} preference - the index of the preference to delete
- * @returns {array} a new list of preferences with the one specified as parameter removed
- */
-
-
-function removeItem(preference) {
-	let newPreferences = []
-	for (let iteration in preferences){
-		if(iteration !== preference)
-		newPreferences.push(preferences[iteration])
-	}
-	return newPreferences
-}
 
 
 
