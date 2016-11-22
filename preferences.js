@@ -24,28 +24,18 @@ const empty = 0
  */
 function validateNewJson(json) {
 	if (json === undefined) {
-		//console.log('UNDEFINED')
 		return false
 	}
 	
-	if (typeof json.journey !== 'string') {
-		//console.log(`NAME NOT STRING`)
+	if('journey' in json && 'origin' in json && 'destination' in json ) {
+		return true
+	}
+
+	else {
+
 		return false
 	}
 
-
-	if (typeof json.origin !== 'string') {
-		//console.log(`NAME NOT STRING`)
-		return false
-	}
-
-	if (typeof json.destination !== 'string') {
-		//console.log(`NAME NOT STRING`)
-		return false
-	}
-
-	/* otherwise return true */
-	return true
 }
 
 
@@ -55,18 +45,14 @@ function validateUpdateJson(json) {
 		return false
 	}
 
-	if (typeof json.origin !== 'string') {
-		//console.log(`NAME NOT STRING`)
-		return false
+	if('origin' in json && 'destination' in json ) {
+		return true
 	}
 
-	if (typeof json.destination !== 'string') {
-		//console.log(`NAME NOT STRING`)
+	else {
+
 		return false
 	}
-
-	/* otherwise return true */
-	return true
 }
 
 exports.initialize = () => {

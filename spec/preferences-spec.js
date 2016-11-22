@@ -1,7 +1,7 @@
 'use strict'
 
-const preferences = require('./preferences')
-const globals = require('./modules/globals')
+const preferences = require('../preferences')
+const globals = require('../modules/globals')
 
 
 describe('Integration testing for the preferences model', function() {
@@ -21,6 +21,78 @@ describe('Integration testing for the preferences model', function() {
 		})
 
 	})
+
+	it('Should return an error if undefined authorization header is supplied to create a new preference', function(done) {
+
+		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
+		let auth 
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('Error: Authorization head is missing')
+			done()
+		})
+
+	})
+
+	it('Should return an error if username and password is not supplied to create a new preference', function(done) {
+
+		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
+		const auth  = {basic: {}}
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('Error: missing username / password')
+			done()
+		})
+
+	})
+
+	it('Should return an error if the password is wrong to create a new preference', function(done) {
+
+		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
+		const auth = {basic: { username: 'Millroy', password: '12345'}}
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('Error: invalid password')
+			done()
+		})
+
+	})
+
+	it('Should return an error if the origin is not passed to create a new preference', function(done) {
+
+		const body = {journey: 'Meeting', destination: 'Coventry'}
+		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('JSON data missing in request body')
+			done()
+		})
+
+	})
+
+	it('Should return an error if the destination is not passed to create a new preference', function(done) {
+
+		const body = {journey: 'Meeting', origin: 'Coventry'}
+		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('JSON data missing in request body')
+			done()
+		})
+
+	})
+
+
 
 	it('Should create a new preference', function(done) {
 
@@ -42,6 +114,25 @@ describe('Integration testing for the preferences model', function() {
 
 
 	})
+
+
+	
+
+	it('Should return an error if the preference is already there', function(done) {
+
+		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
+		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+
+		preferences.addNew(auth, body).then(()=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('Journey name already held by another preference')
+			done()
+		})
+
+	})
+
+
 
 	it('Should update the Preference', function(done) {
 
@@ -83,8 +174,8 @@ describe('Integration testing for the preferences model', function() {
 
 		preferences.getByID(preference_ID).then((data)=>{
 			expect(data.data.Origin).toEqual('Birmingham')
-			expect(data.data.Directions).not.ToEqual(undefined)
-			expect(data.data.Weather).not.toEqual(undefined)
+			expect(data.data.Directions).not.toBe(undefined)
+			expect(data.data.Weather).not.toBe(undefined)
 			expect(data.status).toEqual(globals.status.ok)
 			expect(data.format).toEqual(globals.format.json)
 			done()
@@ -121,16 +212,16 @@ describe('Integration testing for the preferences model', function() {
 
 
 
-	it('Should delete all preferences', function (done) {
+	// it('Should delete all preferences', function (done) {
 		
-		preferences.deleteAllPreferences().then((data)=>{
-			expect(data).toEqual('All preferences deleted')
-			done()
-		}).catch((error)=>{
-			console.log(error)
-			done()
-		})
-	})
+	// 	preferences.deleteAllPreferences().then((data)=>{
+	// 		expect(data).toEqual('All preferences deleted')
+	// 		done()
+	// 	}).catch((error)=>{
+	// 		console.log(error)
+	// 		done()
+	// 	})
+	// })
 
 	it('Should delete all users', function (done) {
 		

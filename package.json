@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
-    "integration_test": "node_modules/.bin/jasmine-node preferences-spec.js --color --verbose --autotest --watch .",
-    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/spec/** -x **index.js** -x **preferences.js** ./node_modules/.bin/jasmine-node spec"
+    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec"
   },
   "repository": {
     "type": "git",
