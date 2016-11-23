@@ -211,6 +211,20 @@ describe('Integration testing for the preferences model', function() {
 
 	})
 
+	it('Should throw an error saying there is no preferences found', function(done){
+
+		const preference_ID = 'Picnic'
+
+		preferences.getByID(preference_ID).then((data)=>{
+			done()
+		}).catch((error)=>{
+			expect(error.message).toBe('Preference not found')
+			done()
+		})
+
+
+	})
+
 
 
 	it('Should update the Preference', function(done) {
