@@ -1,5 +1,11 @@
 'use strict'
 
+
+/**
+ * Authorization module.
+ * @module Authorization
+ */
+
 const bcrypt = require('bcrypt')
 
 /* Used as a parameter in genSaltSyn*/

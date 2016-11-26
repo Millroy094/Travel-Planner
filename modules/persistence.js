@@ -1,5 +1,10 @@
 'use strict'
 
+/**
+ * persistence module.
+ * @module persistence
+ */
+
 /* gets the Schema for the database to implement persistence */
 
 const Database = require('../Schema/schema')
