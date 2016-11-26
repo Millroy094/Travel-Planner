@@ -10,6 +10,7 @@ describe('Check if the database is operating properly', function() {
 			expect(data).toEqual('All preferences deleted')
 			done()
 		}).catch((error)=>{
+			console.log(error)
 			done()
 		})
 
@@ -167,7 +168,7 @@ describe('Check if the database is operating properly', function() {
 		persistence.getPassword('Test').then(()=>{
 			done()
 		}).catch((error)=>{
-			expect(error).toEqual('Error: invalid username')
+			expect(`${error}`).toEqual('Error: invalid username')
 			done()
 		})
 
@@ -179,6 +180,7 @@ describe('Check if the database is operating properly', function() {
 			expect(data).toEqual('All users deleted')
 			done()
 		}).catch((error)=>{
+			console.log(error)
 			done()
 		})
 

@@ -400,6 +400,7 @@ exports.deleteAllUsers = () => new Promise((resolve, reject) => {
 exports.deleteAllPreferences = () => new Promise((resolve, reject) => {
 
 		persistence.clearAllPreferences().then((data)=>{
+			preferences = []
 			resolve(data)
 		}).catch((error)=>{
 			reject(error)

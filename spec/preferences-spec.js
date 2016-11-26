@@ -6,6 +6,7 @@ const globals = require('../modules/globals')
 
 describe('Integration testing for the preferences model', function() {
 
+
 	it('Should return an error saying there are no preferences', function (done){
 
 		preferences.initialize().then(()=>{

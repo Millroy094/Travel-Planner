@@ -20,10 +20,10 @@ const globals = require('./modules/globals')
 const defaultPort = 8080
 
 /* Retrives all preferences to local preferences list */
-preferences.initialize().then((data)=>{
+preferences.initialize().then((data) => {
 	console.log(` ${data} preferences initialized`)
-}).catch((error)=>{
-	console.log('No preferences found')
+}).catch((error) => {
+	console.log(error)
 })
 
 
@@ -35,13 +35,13 @@ server.get('/', function(req, res, next) {
 /* this route provides a URL for the 'preferences' collection.  */
 
 server.get('/preferences', function(req, res) {
-	
+
 	/* gets the host from the request */
 	const host = req.headers.host
 
 	/* gets a list of all the preferences */
 	const data = preferences.getAll(host)
-	
+
 	/* Sends a response to the client */
 	res.setHeader('content-type', data.format)
 	res.setHeader('Allow', 'GET, POST')
@@ -53,17 +53,17 @@ server.get('/preferences', function(req, res) {
 /* this route will take preference id as a parameter and respond with JSON representation of journey & weather information */
 
 server.get('/preferences/:preferenceID', function(req, res) {
-	
+
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
-	
+
 	/* if data was returned correctly then send a response, if there was an error client is feedback */
 
-	preferences.getByID(preferenceID).then((data)=>{
+	preferences.getByID(preferenceID).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET')
-		res.send(data.status, { data : data.data})
+		res.send(data.status, { data: data.data})
 		res.end()
 
 	}).catch((error) => {
@@ -84,10 +84,10 @@ server.post('/preferences', function(req, res) {
 	/* It will either respond with an error if unsucessful else with with the information to the link to the new reasource created */
 
 	preferences.addNew(auth, req.body).then((data) => {
-			
+
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST')
-		
+
 		if (data.status === globals.status.created) {
 			res.setHeader('Location', `/preferences/${data.data.id}`)
 			res.setHeader('Last-Modified', data.data.modified.toUTCString())
@@ -103,9 +103,9 @@ server.post('/preferences', function(req, res) {
 
 	}).catch((error) => {
 
-		res.setHeader('content-type', 'application/json')
+		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST')
-		res.send(404, {message: error.message})
+		res.send(error.status, {message: error.message})
 		res.end()
 
 	})
@@ -115,7 +115,7 @@ server.post('/preferences', function(req, res) {
 /* This route will update existing resources*/
 
 server.put('/preferences/:preferenceID', function(req, res) {
-	
+
 	/* Gets the authentication information and stores it in an object */
 	const auth = req.authorization
 
@@ -127,20 +127,20 @@ server.put('/preferences/:preferenceID', function(req, res) {
 	preferences.updateByID(auth, req.body, preferenceID).then((data) => {
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.send(data.status, {message : data.message})
-		
+		res.send(data.status, {message: data.message})
+
 
 	}).catch((error) => {
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.send(error.status, {message : error.message})
-		
+		res.send(error.status, {message: error.message})
+
 
 	})
 
 })
 
-/* This route will delete the specified resource  */
+/* This route will delete the specified preference  */
 server.del('/preferences/:preferenceID', function(req, res) {
 
 	/* Gets the authentication information and stores it in an object */
@@ -157,26 +157,26 @@ server.del('/preferences/:preferenceID', function(req, res) {
 		res.send(data.status, {message: data.message})
 		res.end()
 
-	}).catch((error)=>{
+	}).catch((error) => {
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
 		res.send(error.status, {message: error.message})
 	})
 
-	
 
 })
 
+/* This route will create a new user  */
 server.post('/Users', (req, res) => {
 
-	preferences.addUser(req.body).then((data)=>{
+	preferences.addUser(req.body).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST')
 		res.send(data.status, {message: data.message})
 		res.end()
 
-	}).catch((error)=>{
+	}).catch((error) => {
 
 		res.setHeader('content-type', error.format)
 		res.setHeader('Allow', 'GET, POST')
@@ -186,10 +186,11 @@ server.post('/Users', (req, res) => {
 })
 
 
+/* This return get a port from environment variable or set it to 8080 */
 
 const port = process.env.PORT || defaultPort
 
-
+/* Listens for connections on the host:port */
 server.listen(port, function(err) {
 	if (err) {
 		console.error(err)

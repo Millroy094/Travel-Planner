@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
-    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec"
+    "acceptence": "node_modules/.bin/jasmine-node test --verbose",
+    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec"
+
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,8 @@
   },
   "homepage": "https://gitlab.com/Millroy098/Travel-Planner#README",
   "devDependencies": {
+    "eslint": "^3.10.2",
+    "eslint-plugin-react": "^6.7.1",
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.14.5"
   }
