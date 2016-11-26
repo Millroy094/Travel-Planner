@@ -16,6 +16,7 @@ const empty = 0
 
 /**
  * this is a private function that can only be accessed from inside the module. It checks that the json data supplied in the request body comprises a single array of strings. The parameter contains the string passed in the request body.
+ * @function validateNewJson
  * @private
  * @param {string} json - the string to check
  * @returns {boolean} whether the string is valid
@@ -36,6 +37,7 @@ function validateNewJson(json) {
 
 /**
  * This function is used for validating the body data for an update
+ * @function validateUpdateJson
  * @private
  * @param {string} json - the string to check
  * @returns {boolean} whether the string is valid
@@ -57,6 +59,7 @@ function validateUpdateJson(json) {
 
 /**
  * This function initializes the preferences by pulling the data from the database
+ * @function initialize
  * @public
  * @returns {Promise} with either number of preferences or an error if nothing is found
  */
@@ -75,6 +78,7 @@ exports.initialize = () => new Promise((resolve, reject) => {
 
 /**
  * Returns a combination of weather and direction information for the preference
+ * @function getByID
  * @public
  * @param {string} preferenceID - represents the id of the preference
  * @returns {Promise} returns valid data or returns an error
@@ -128,6 +132,7 @@ exports.getByID = preferenceID => new Promise ((resolve, reject) => {
 
 /**
  * This public property contains a function that returns an array containing summaries of each preference stored. The summary contains the preference name and also the URL of its full resource.
+ * @function getAll
  * @public
  * @param {string} host - represents the host the application is running on
  * @returns {Promise} returns valid data or returns an error
@@ -162,6 +167,7 @@ exports.getAll = function(host) {
 
 /**
  * Adds the new preference supplied in the body to the list of preferences
+ * @function addNew
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
@@ -248,6 +254,7 @@ exports.addNew = (auth, body) => new Promise((resolve,reject) => {
 
 /**
  * Deletes an existing preference
+ * @function deleteByID
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {string} preferenceID - represents the id of the preference to be deleted
@@ -296,6 +303,7 @@ exports.deleteByID = (auth, preferenceID) => new Promise((resolve,reject) => {
 
 /**
  * Updates an existing preference
+ * @function updateByID
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
@@ -392,6 +400,7 @@ exports.updateByID = (auth, body, preferenceID) => new Promise((resolve, reject)
 
 /**
  * Creates an new user in the database
+ * @function addUser
  * @public
  * @param {body} body - represents the data to be added, supplied in the http request
  * @returns {Promise} returns approval of the newly added data or returns an error
@@ -422,6 +431,7 @@ exports.addUser = body => new Promise((resolve, reject) => {
 
 /**
  * Authenticates the data passed in the authorization header
+ * @function authenticate
  * @private
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @returns {Promise} returns approval of data being authenticated or a rejection
@@ -453,6 +463,7 @@ function authenticate(auth){
 
 /**
  * Deletes all the users in the database
+ * @function deleteAllUsers
  * @public
  * @returns {Promise} returns approval of the deletion or a rejction with an error
  */
@@ -468,6 +479,7 @@ exports.deleteAllUsers = () => new Promise((resolve, reject) => {
 
 /**
  * Deletes all the users in the database
+ * @function deleteAllPreferences
  * @public
  * @returns {Promise} returns approval of the deletion or a rejction with an error
  */

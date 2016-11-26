@@ -5,14 +5,14 @@ const globals = require('../modules/globals')
 const preferences = require('../preferences')
 
 //Clear the database
-preferences.deleteAllUsers().then(()=>{
-}).catch((error)=>{
+preferences.deleteAllUsers().then(() => {
+}).catch((error) => {
 	console.log(error)
 })
 
-preferences.deleteAllPreferences().then(()=>{
-}).catch((error)=>{
-		console.log(error)	
+preferences.deleteAllPreferences().then(() => {
+}).catch((error) => {
+	console.log(error)
 })
 
 
@@ -34,7 +34,7 @@ frisby.create('get a empty list of preferences')
 
 
 frisby.create('add a new User')
-	.post('http://localhost:8080/Users', {'username': 'Millroy', 'password' : '1234566'}, {json: true})
+	.post('http://localhost:8080/Users', {'username': 'Millroy', 'password': '1234566'}, {json: true})
 	.expectStatus(globals.status.created)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -44,7 +44,7 @@ frisby.create('add a new User')
 	.toss()
 
 frisby.create('should throw an error user already exists')
-	.post('http://localhost:8080/Users', {'username': 'Millroy', 'password' : '1234566'}, {json: true})
+	.post('http://localhost:8080/Users', {'username': 'Millroy', 'password': '1234566'}, {json: true})
 	.expectStatus(globals.status.badRequest)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -54,7 +54,7 @@ frisby.create('should throw an error user already exists')
 	.toss()
 
 frisby.create('add a new preference')
-	.post('http://localhost:8080/preferences', {'journey': 'Meeting', 'origin' : 'birmingham', 'destination': 'swindon'}, {json: true})
+	.post('http://localhost:8080/preferences', {'journey': 'Meeting', 'origin': 'birmingham', 'destination': 'swindon'}, {json: true})
 	.expectStatus(globals.status.created)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -66,7 +66,7 @@ frisby.create('add a new preference')
 	.toss()
 
 frisby.create('should throw an error saying preference already exists')
-	.post('http://localhost:8080/preferences', {'journey': 'Meeting', 'origin' : 'birmingham', 'destination': 'swindon'}, {json: true})
+	.post('http://localhost:8080/preferences', {'journey': 'Meeting', 'origin': 'birmingham', 'destination': 'swindon'}, {json: true})
 	.expectStatus(globals.status.badRequest)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -107,7 +107,7 @@ frisby.create('should return an error saying preference not found')
 
 
 frisby.create('update a preference')
-	.put('http://localhost:8080/preferences/Meeting', {'origin' : 'swindon', 'destination': 'birmingham'}, {json: true})
+	.put('http://localhost:8080/preferences/Meeting', {'origin': 'swindon', 'destination': 'birmingham'}, {json: true})
 	.expectStatus(globals.status.ok)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -124,15 +124,14 @@ frisby.create('delete a preference')
 
 
 //Clear the database
-preferences.deleteAllUsers().then(()=>{
-}).catch((error)=>{
+preferences.deleteAllUsers().then(() => {
+}).catch((error) => {
 	console.log(error)
 })
 
-preferences.deleteAllPreferences().then(()=>{	
-}).catch((error)=>{
-		console.log(error)	
+preferences.deleteAllPreferences().then(() => {
+}).catch((error) => {
+	console.log(error)
 })
-
 
 

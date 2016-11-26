@@ -3,6 +3,7 @@
 
 // import the mongoose package
 const mongoose = require('mongoose')
+
 mongoose.connect('mongodb://millroy098:itcanbedone@ds151707.mlab.com:51707/travelplanner')
 mongoose.Promise = global.Promise
 const Schema = mongoose.Schema

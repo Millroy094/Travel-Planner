@@ -18,34 +18,35 @@ describe('Check weather module returns accurate data', function() {
 			const data = fs.readFileSync('spec/weather/swindon_weather.json', 'utf8')
 
 			const json = JSON.parse(data)
+
 			resolve(json)
 
 		})
 
 	})
 
-	it('Should return 8 hour forecast', function (done) {
-		forecast.getForecast(51.55571219999999,-1.7799789).then((data)=>{
+	it('Should return 8 hour forecast', function(done) {
+		forecast.getForecast(51.55571219999999,-1.7799789).then((data) => {
 			expect(data.hourly.data.length).toEqual(8)
 			done()
-		}).catch((error)=>{
+		}).catch((error) => {
 			console.log(error)
 			done()
 		})
 	})
 
-	it('Should return the current state of the weather', function (done) {
-		forecast.getForecast(51.55571219999999,-1.7799789).then((data)=>{
+	it('Should return the current state of the weather', function(done) {
+		forecast.getForecast(51.55571219999999,-1.7799789).then((data) => {
 			expect(data.currently.summary).toEqual('Clear')
 			done()
-		}).catch((error)=>{
+		}).catch((error) => {
 			console.log(error)
 			done()
 		})
 	})
 
-	it('Should throw an error if invalid data is passed', function (done) {
-		forecast.getForecast('One',1).catch((error)=>{
+	it('Should throw an error if invalid data is passed', function(done) {
+		forecast.getForecast('One',1).catch((error) => {
 			expect(error).toEqual('Invalid latitude and longitude')
 			done()
 		})
