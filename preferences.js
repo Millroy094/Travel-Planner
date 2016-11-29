@@ -1,5 +1,10 @@
 'use strict'
 
+/**
+ * preferences module.
+ * @module preferences
+ */
+
 /* Module to manage users */
 
 const globals = require('./modules/globals')

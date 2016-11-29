@@ -60,7 +60,7 @@ exports.getHashValue = password => new Promise( (resolve) => {
  * @public
  * @param {string} provided - represents the plain text version of password
  * @param {string} stored - represents the hash value of password retreived from the database
- * @returns {Promise} returns a promise resolving they match or else rejection if they don't
+ * @returns {Promise} returns a promise resolving the match or else rejection if they don't
  */
 exports.validateUser = (provided, stored) => new Promise( (resolve, reject) => {
 	if (!bcrypt.compareSync(provided, stored)) {

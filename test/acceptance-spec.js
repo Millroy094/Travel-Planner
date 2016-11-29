@@ -4,17 +4,6 @@ const frisby = require('frisby')
 const globals = require('../modules/globals')
 const preferences = require('../preferences')
 
-//Clear the database
-preferences.deleteAllUsers().then(() => {
-}).catch((error) => {
-	console.log(error)
-})
-
-preferences.deleteAllPreferences().then(() => {
-}).catch((error) => {
-	console.log(error)
-})
-
 
 /*  // globalSetup defines any settigs used for ALL requests */
 frisby.globalSetup({
@@ -22,6 +11,7 @@ frisby.globalSetup({
 		headers: {'Authorization': 'Basic TWlsbHJveToxMjM0NTY2','Content-Type': 'application/json', 'host': 'localhost'}
 	}
 })
+
 
 frisby.create('get a empty list of preferences')
 	.get('http://localhost:8080/preferences')
@@ -95,8 +85,8 @@ frisby.create('should return weather and direction data of preference')
 	})
 	.toss()
 
-frisby.create('should return an error saying preference not found')
-	.get('http://localhost:8080/preferences/Meeting')
+frisby.create('should return an error saying preference not found, when getting an item')
+	.get('http://localhost:8080/preferences/Picnic')
 	.expectStatus(globals.status.notFound)
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
@@ -113,6 +103,17 @@ frisby.create('update a preference')
 	.afterJSON( json => {
 		expect(json.message).toEqual('Preference with the name Meeting is Updated')
 	})
+	.toss()
+
+frisby.create('should return an error saying preference not found when updating')
+	.put('http://localhost:8080/preferences/Picnic', {'origin': 'swindon', 'destination': 'birmingham'}, {json: true})
+	.expectStatus(globals.status.notFound)
+	.expectHeaderContains('Content-Type', globals.format.json)
+	.afterJSON( json => {
+		expect(json.message).toEqual('Preference not in list')
+
+	})
+	.toss()
 
 frisby.create('delete a preference')
 	.delete('http://localhost:8080/preferences/Meeting')
@@ -121,17 +122,29 @@ frisby.create('delete a preference')
 	.afterJSON( json => {
 		expect(json.message).toEqual('Preference Meeting is sucessfully deleted')
 	})
+	.toss()
+
+frisby.create('should return an error saying preference not found when deleting')
+	.delete('http://localhost:8080/preferences/Picnic')
+	.expectStatus(globals.status.notFound)
+	.expectHeaderContains('Content-Type', globals.format.json)
+	.afterJSON( json => {
+		expect(json.message).toEqual('Preference not in list')
+		
+		/* Delete the database */
+
+		preferences.deleteAllPreferences().then(()=>{
+			return preferences.deleteAllUsers()
+		}).then(()=>{
+			console.log('All preferences and users deleted')
+		}).catch((error)=>{
+			console.log(error)
+		})
+
+	})
+	.toss()
 
 
-//Clear the database
-preferences.deleteAllUsers().then(() => {
-}).catch((error) => {
-	console.log(error)
-})
 
-preferences.deleteAllPreferences().then(() => {
-}).catch((error) => {
-	console.log(error)
-})
 
 

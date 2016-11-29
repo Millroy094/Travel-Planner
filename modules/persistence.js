@@ -47,11 +47,10 @@ exports.savePreference = preferInfo => new Promise ((resolve, reject) => {
 
 			const prefer = new Database.Preference(preferInfo)
 
-			prefer.save( (err, preference) => {
+			prefer.save( (err) => {
 				if (err) {
 					reject(new Error('an error saving preference'))
 				}
-				console.log(preference)
 				resolve('Save Successful')
 			})
 		}).catch((error) => {
@@ -121,10 +120,9 @@ exports.updateByID = preferInfo => new Promise ((resolve, reject) => {
 
 		/* Finds and updates the preferences, if there is a error it rejects it */
 
-		Database.Preference.findOneAndUpdate({ id: preferInfo.id }, {origin: preferInfo.origin, destination: preferInfo.destination, modified: preferInfo.modified}, (err, done) => {
+		Database.Preference.findOneAndUpdate({ id: preferInfo.id }, {origin: preferInfo.origin, destination: preferInfo.destination, modified: preferInfo.modified}, (err) => {
 
 			if(err) reject(new Error('Database error! preference could not be updated'))
-			console.log(done)
 			resolve(`Preference with the name ${preferInfo.id} is Updated`)
 		})
 
@@ -187,11 +185,10 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 
 		/* If all is good user is saved. If there is an error a rejection is send with an error */
 
-		user.save( (err, user) => {
+		user.save( (err) => {
 			if (err) {
 				reject(new Error('error creating account'))
 			}
-			console.log(user)
 			resolve('New user added')
 		})
 
@@ -225,7 +222,6 @@ exports.accountExists = username => new Promise( (resolve, reject) => {
 exports.getPassword = username => new Promise( (resolve, reject) => {
 
 	const firstIndex = 0
-
 	Database.Accounts.find({username: username}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (docs.length) resolve(docs[firstIndex].password)
