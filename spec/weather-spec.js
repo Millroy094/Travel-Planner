@@ -4,8 +4,8 @@ const fs = require('fs')
 const rewire = require('rewire')
 const forecast = rewire('../modules/weather')
 
-const initial = 0
-const max = 8
+const lat = 51.55571219999999
+const lng = -1.7799789
 
 describe('Check weather module returns accurate data', function() {
 
@@ -26,8 +26,10 @@ describe('Check weather module returns accurate data', function() {
 	})
 
 	it('Should return 8 hour forecast', function(done) {
-		forecast.getForecast(51.55571219999999,-1.7799789).then((data) => {
-			expect(data.hourly.data.length).toEqual(8)
+		forecast.getForecast(lat,lng).then((data) => {
+			const length = 8
+
+			expect(data.hourly.data.length).toEqual(length)
 			done()
 		}).catch((error) => {
 			console.log(error)
@@ -36,7 +38,7 @@ describe('Check weather module returns accurate data', function() {
 	})
 
 	it('Should return the current state of the weather', function(done) {
-		forecast.getForecast(51.55571219999999,-1.7799789).then((data) => {
+		forecast.getForecast(lat,lng).then((data) => {
 			expect(data.currently.summary).toEqual('Clear')
 			done()
 		}).catch((error) => {
@@ -46,7 +48,9 @@ describe('Check weather module returns accurate data', function() {
 	})
 
 	it('Should throw an error if invalid data is passed', function(done) {
-		forecast.getForecast('One',1).catch((error) => {
+		const data = 1
+
+		forecast.getForecast('One',data).catch((error) => {
 			expect(error).toEqual('Invalid latitude and longitude')
 			done()
 		})

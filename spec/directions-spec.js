@@ -9,7 +9,9 @@ describe('Check directions module returns accurate data', function() {
 
 	direction.__set__('apiCall', function(origin, destination) {
 
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
+
+			if (!isNaN(origin) || !isNaN(destination)) reject ('Invalid origin and destination')
 
 			const body = fs.readFileSync('spec/direction/bham_to_swindon.json', 'utf8')
 

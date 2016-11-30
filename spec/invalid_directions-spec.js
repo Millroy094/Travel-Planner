@@ -9,8 +9,9 @@ describe('Check directions module returns error for invalid location', function(
 
 	direction.__set__('apiCall', function(origin, destination) {
 
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 
+			if (!isNaN(origin) || !isNaN(destination)) reject ('Invalid origin and destination')
 			const body = fs.readFileSync('spec/direction/invalid.json', 'utf8')
 			const json = JSON.parse(body)
 

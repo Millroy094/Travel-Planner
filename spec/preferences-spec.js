@@ -34,7 +34,7 @@ describe('Integration testing for the preferences model', function() {
 
 	it('Should return an error saying user already exists', function(done) {
 
-		preferences.addUser({username: 'Millroy', password: '1234566'}).then((data) => {
+		preferences.addUser({username: 'Millroy', password: '1234566'}).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: username already exists')
@@ -214,7 +214,7 @@ describe('Integration testing for the preferences model', function() {
 
 		const preference_ID = 'Picnic'
 
-		preferences.getByID(preference_ID).then((data) => {
+		preferences.getByID(preference_ID).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not found')
@@ -267,9 +267,8 @@ describe('Integration testing for the preferences model', function() {
 		const preference_ID = 'Picnic'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
 
-		preferences.updateByID(auth, body, preference_ID).then((data) => {
+		preferences.updateByID(auth, body, preference_ID).then(() => {
 			done()
-
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not in list')
 			done()
@@ -479,7 +478,7 @@ describe('Integration testing for the preferences model', function() {
 		const preference_ID = 'Picnic'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
 
-		preferences.deleteByID(auth, preference_ID).then((data) => {
+		preferences.deleteByID(auth, preference_ID).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not in list')

@@ -18,7 +18,7 @@ describe('Check if the database is operating properly', function() {
 
 	it('Initially there should be no preferences stored', function(done) {
 
-		persistence.getAllPreferences().then((data) => {
+		persistence.getAllPreferences().then(() => {
 			done()
 		}).catch((error) => {
 			expect(`${error}`).toEqual('Error: No preferences found')
@@ -123,6 +123,7 @@ describe('Check if the database is operating properly', function() {
 			expect(data).toEqual('New user added')
 			done()
 		}).catch((error) => {
+			console.log(error)
 			done()
 		})
 
@@ -130,7 +131,7 @@ describe('Check if the database is operating properly', function() {
 
 	it('Check if error is thrown if the data passed is not complete', function(done) {
 
-		persistence.addAccount({username: 'Test'}).then((data) => {
+		persistence.addAccount({username: 'Test'}).then(() => {
 			done()
 		}).catch((error) => {
 			expect(`${error}`).toEqual('Error: invalid user object')
@@ -156,6 +157,7 @@ describe('Check if the database is operating properly', function() {
 			expect(password).toEqual('12345')
 			done()
 		}).catch((error) => {
+			console.log(error)
 			done()
 		})
 
