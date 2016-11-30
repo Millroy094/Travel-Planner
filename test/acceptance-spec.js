@@ -50,9 +50,9 @@ frisby.create('add a new preference')
 	.expectHeaderContains('Content-Type', globals.format.json)
 	.afterJSON( json => {
 		expect(json.message).toEqual('Preference created')
-		expect(json.data.id).toEqual('Meeting')
-		expect(json.data.origin).toEqual('birmingham')
-		expect(json.data.destination).toEqual('swindon')
+		expect(json.data.preference.id).toEqual('Meeting')
+		expect(json.data.preference.origin).toEqual('birmingham')
+		expect(json.data.preference.destination).toEqual('swindon')
 	})
 	.toss()
 

@@ -178,7 +178,7 @@ exports.getAll = function(host) {
  * @param {body} body - represents the data to be added, supplied in the http request
  * @returns {Promise} returns approval of the newly added data or returns an error
  */
-exports.addNew = (auth, body) => new Promise((resolve,reject) => {
+exports.addNew = (auth, body, host) => new Promise((resolve,reject) => {
 
 	/* Authenticates the request, if failed authentication rejects with an error */
 
@@ -223,7 +223,8 @@ exports.addNew = (auth, body) => new Promise((resolve,reject) => {
 				const newPreference = {id, modified, origin, destination}
 
 				preferences.push(newPreference)
-				const result = { status: globals.status.created, format: globals.format.json, message: 'Preference created', data: newPreference}
+
+				const result = { status: globals.status.created, format: globals.format.json, message: 'Preference created', data: { _links: { self: { href: `http://${host}/preferences/${newPreference.id}`} }, preference: newPreference}}
 
 				resolve(result)
 
