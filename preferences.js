@@ -88,7 +88,7 @@ exports.initialize = () => new Promise((resolve, reject) => {
  * @param {string} preferenceID - represents the id of the preference
  * @returns {Promise} returns valid data or returns an error
  */
-exports.getByID = preferenceID => new Promise ((resolve, reject) => {
+exports.getByID = (preferenceID, host) => new Promise ((resolve, reject) => {
 
 	/* returns the found set of all the preferences matching the preference id */
 
@@ -122,7 +122,7 @@ exports.getByID = preferenceID => new Promise ((resolve, reject) => {
 		}).then((data) => forecast.getForecast(data.lat, data.lng)).then((data) => {
 			this.weather = data
 			resolve ({status: globals.status.ok, format: globals.format.json,
-				data: { Origin: origin, Destination: destination, Distance: this.distance, Duration: this.duration, Directions: this.steps, Weather: this.weather}
+				data: { _links: { self: { href: `http://${host}/preferences/${preferenceID}`} },Origin: origin, Destination: destination, Distance: this.distance, Duration: this.duration, Directions: this.steps, Weather: this.weather}
 			})
 		}).catch((error) => {
 			reject({status: globals.status.notFound,
@@ -157,7 +157,7 @@ exports.getAll = function(host) {
 	/* If found maps through the preferences makes an list of objects with all the information in it to sent it as a response */
 
 	const notes = preferences.map(function(item) {
-		return { journey: item.id, origin: item.origin, destination: item.destination, link: `http://${host}/preferences/${item.id}`}
+		return { _links: { self: { href: `http://${host}/preferences/${item.id}`} }, journey: item.id, origin: item.origin, destination: item.destination}
 	})
 
 	/* And returns a response with the data */

@@ -193,8 +193,9 @@ describe('Integration testing for the preferences model', function() {
 	it('Should return weather and direction information', function(done){
 
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.getByID(preference_ID).then((data) => {
+		preferences.getByID(preference_ID, host).then((data) => {
 			expect(data.data.Origin).toEqual('Birmingham')
 			expect(data.data.Destination).toEqual('Coventry')
 			expect(data.data.Directions).not.toBe(undefined)
@@ -213,8 +214,9 @@ describe('Integration testing for the preferences model', function() {
 	it('Should throw an error saying there is no preferences found', function(done){
 
 		const preference_ID = 'Picnic'
+		const host = 'localhost:8080'
 
-		preferences.getByID(preference_ID).then(() => {
+		preferences.getByID(preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not found')
@@ -369,7 +371,7 @@ describe('Integration testing for the preferences model', function() {
 
 	it('Should return a list of all the preferences', function(done){
 
-		const host = 'localhost'
+		const host = 'localhost:8080'
 
 		const data = preferences.getAll(host)
 

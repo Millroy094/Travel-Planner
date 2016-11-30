@@ -54,12 +54,15 @@ server.get('/preferences', function(req, res) {
 
 server.get('/preferences/:preferenceID', function(req, res) {
 
+	/* gets the host from the request */
+	const host = req.headers.host
+
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
 	/* if data was returned correctly then send a response, if there was an error client is feedback */
 
-	preferences.getByID(preferenceID).then((data) => {
+	preferences.getByID(preferenceID, host).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET')
