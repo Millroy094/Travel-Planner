@@ -9,9 +9,8 @@ describe('Check directions module returns error for invalid location', function(
 
 	direction.__set__('apiCall', function(origin, destination) {
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 
-			const firstIndex = 0
 			const body = fs.readFileSync('spec/direction/invalid.json', 'utf8')
 			const json = JSON.parse(body)
 
@@ -41,16 +40,14 @@ describe('Check directions module returns error for invalid location', function(
 	})
 
 	it('Should return an error when directions are asked', function(done) {
-		direction.getDirections('Birmingham','Goa').then(() => {
-		}).catch((error) => {
+		direction.getDirections('Birmingham','Goa').catch((error) => {
 			expect(`${error}`).toEqual('Error: Invalid location')
 			done()
 		})
 	})
 
 	it('Should return an error when coordinates are asked', function(done) {
-		direction.getCoordinates('Birmingham','Goa').then(() => {
-		}).catch((error) => {
+		direction.getCoordinates('Birmingham','Goa').catch((error) => {
 			expect(`${error}`).toEqual('Error: Invalid location')
 			done()
 		})

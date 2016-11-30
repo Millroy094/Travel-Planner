@@ -14,6 +14,7 @@ describe('Check the authorization module functions as excepted', function() {
 			expect(data.password).toEqual('12325')
 			done()
 		}).catch((error) => {
+			console.log(error)
 			done()
 		})
 
@@ -47,10 +48,11 @@ describe('Check the authorization module functions as excepted', function() {
 
 	it('Should return the right hash value', function(done) {
 
-		authorization.getHashValue('12345').then((Hash) => authorization.validateUser('12345', Hash)).then((data) => {
+		authorization.getHashValue('12345').then((Hash) => authorization.validateUser('12345', Hash)).then(() => {
 			expect().toEqual()
 			done()
 		}).catch((error) => {
+			console.log(error)
 			done()
 		})
 

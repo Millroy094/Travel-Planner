@@ -6,6 +6,7 @@ const preferences = require('../preferences')
 
 
 /*  // globalSetup defines any settigs used for ALL requests */
+
 frisby.globalSetup({
 	request: {
 		headers: {'Authorization': 'Basic TWlsbHJveToxMjM0NTY2','Content-Type': 'application/json', 'host': 'localhost'}

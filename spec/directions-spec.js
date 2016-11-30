@@ -9,9 +9,7 @@ describe('Check directions module returns accurate data', function() {
 
 	direction.__set__('apiCall', function(origin, destination) {
 
-		return new Promise((resolve, reject) => {
-
-			const firstIndex = 0
+		return new Promise((resolve) => {
 
 			const body = fs.readFileSync('spec/direction/bham_to_swindon.json', 'utf8')
 
@@ -45,7 +43,9 @@ describe('Check directions module returns accurate data', function() {
 
 	it('Should return the right number of directions', function(done) {
 		direction.getDirections('Birmingham','Swindon').then((data) => {
-			expect(data.length).toEqual(24)
+			const length = 24
+
+			expect(data.length).toEqual(length)
 			done()
 		}).catch((error) => {
 			console.log(error)
@@ -55,8 +55,11 @@ describe('Check directions module returns accurate data', function() {
 
 	it('Should return the right coordinates', function(done) {
 		direction.getCoordinates('Birmingham','Swindon').then((data) => {
-			expect(data.lat).toEqual(51.55571219999999)
-			expect(data.lng).toEqual(-1.7799789)
+			const lat = 51.55571219999999
+			const lng = -1.7799789
+
+			expect(data.lat).toEqual(lat)
+			expect(data.lng).toEqual(lng)
 			done()
 		}).catch((error) => {
 			console.log(error)
