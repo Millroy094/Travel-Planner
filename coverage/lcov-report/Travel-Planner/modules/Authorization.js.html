@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>19/19</span>
+        <span class='fraction'>20/20</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>16/16</span>
+        <span class='fraction'>17/17</span>
       </div>
     </div>
   </div>
@@ -74,17 +74,78 @@
 29
 30
 31
-32</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">1×</span>
@@ -94,10 +155,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
@@ -105,15 +182,38 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict'
+&nbsp;
+&nbsp;
+/**
+ * Authorization module.
+ * @module Authorization
+ */
 &nbsp;
 const bcrypt = require('bcrypt')
 &nbsp;
-exports.validateHeader = authorization =&gt; new Promise ((resolve, reject)=&gt; {
+/* Used as a parameter in genSaltSyn*/
+&nbsp;
+const saltValue = 10
+&nbsp;
+&nbsp;
+/**
+ * This functions validates the header and checks if all the information is provided
+ * @function validateHeader
+ * @public
+ * @param {authorization} authorization - represents the authenitication data from the head in the http request
+ * @returns {Promise} returns a promise with the user's credentials or rejects with an error
+ */
+exports.validateHeader = authorization =&gt; new Promise ((resolve, reject) =&gt; {
+&nbsp;
+	/* Checks if the header is not undefined */
 &nbsp;
 	if(authorization === undefined || authorization.basic === undefined) {
 		reject(new Error('Authorization head is missing'))
 	}
+&nbsp;
+	/* it then checks if username and password is supplied */
 &nbsp;
 	const auth = authorization.basic
 &nbsp;
@@ -125,24 +225,41 @@ exports.validateHeader = authorization =&gt; new Promise ((resolve, reject)=&gt;
 &nbsp;
 })
 &nbsp;
-exports.getHashValue = password =&gt; new Promise( (resolve, reject) =&gt; {
-  const salt = bcrypt.genSaltSync(10)
-  password = bcrypt.hashSync(password, salt)
-  resolve(password)
+/**
+ * This functions generates the hash value of the string supplied
+ * @function getHashValue
+ * @public
+ * @param {string} password - represents the plain text version of password that will be used by user
+ * @returns {Promise} returns a promise with a hash value of password
+ */
+exports.getHashValue = password =&gt; new Promise( (resolve) =&gt; {
+	const salt = bcrypt.genSaltSync(saltValue)
+&nbsp;
+	password = bcrypt.hashSync(password, salt)
+	resolve(password)
 })
 &nbsp;
+/**
+ * This functions checks the password hash against the plain text supplied and resolves them if theu match
+ * @function validateUser
+ * @public
+ * @param {string} provided - represents the plain text version of password
+ * @param {string} stored - represents the hash value of password retreived from the database
+ * @returns {Promise} returns a promise resolving the match or else rejection if they don't
+ */
 exports.validateUser = (provided, stored) =&gt; new Promise( (resolve, reject) =&gt; {
-  if (!bcrypt.compareSync(provided, stored)) {
+	if (!bcrypt.compareSync(provided, stored)) {
 		reject(new Error('invalid password'))
 	}
-  resolve()
-})</pre></td></tr>
+	resolve()
+})
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Nov 23 2016 10:56:10 GMT+0000 (GMT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Nov 30 2016 11:32:41 GMT+0000 (GMT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

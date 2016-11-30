@@ -54,12 +54,15 @@ server.get('/preferences', function(req, res) {
 
 server.get('/preferences/:preferenceID', function(req, res) {
 
+	/* gets the host from the request */
+	const host = req.headers.host
+
 	/* Stores the parameter */
 	const preferenceID = req.params.preferenceID
 
 	/* if data was returned correctly then send a response, if there was an error client is feedback */
 
-	preferences.getByID(preferenceID).then((data) => {
+	preferences.getByID(preferenceID, host).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET')
@@ -78,19 +81,22 @@ server.get('/preferences/:preferenceID', function(req, res) {
 
 server.post('/preferences', function(req, res) {
 
+	/* gets the host from the request */
+	const host = req.headers.host
+
 	/* Gets the authentication information and stores it in an object */
 	const auth = req.authorization
 
 	/* It will either respond with an error if unsucessful else with with the information to the link to the new reasource created */
 
-	preferences.addNew(auth, req.body).then((data) => {
+	preferences.addNew(auth, req.body, host).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST')
 
 		if (data.status === globals.status.created) {
 			res.setHeader('Location', `/preferences/${data.data.id}`)
-			res.setHeader('Last-Modified', data.data.modified.toUTCString())
+			res.setHeader('Last-Modified', data.data.preference.modified.toUTCString())
 		}
 
 		if (data.data === undefined) {

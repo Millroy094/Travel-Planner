@@ -47,8 +47,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		let auth
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: Authorization head is missing')
@@ -62,8 +63,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: {}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: missing username / password')
@@ -76,8 +78,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: {username: 'Millro', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid username')
@@ -90,8 +93,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '12345'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid password')
@@ -104,8 +108,8 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
-
-		preferences.addNew(auth, body).then(() => {
+		const host = 'localhost:8080'
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -118,8 +122,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -132,8 +137,9 @@ describe('Integration testing for the preferences model', function() {
 
 		let body
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -147,14 +153,15 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then((data) => {
+		preferences.addNew(auth, body, host).then((data) => {
 			expect(data.message).toEqual('Preference created')
 			expect(data.status).toEqual(globals.status.created)
 			expect(data.format).toEqual(globals.format.json)
-			expect(data.data.id).toEqual('Meeting')
-			expect(data.data.origin).toEqual('Birmingham')
-			expect(data.data.destination).toEqual('Coventry')
+			expect(data.data.preference.id).toEqual('Meeting')
+			expect(data.data.preference.origin).toEqual('Birmingham')
+			expect(data.data.preference.destination).toEqual('Coventry')
 			done()
 		}).catch((error) => {
 			console.log(error)
@@ -180,8 +187,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const body = {journey: 'Meeting', origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.addNew(auth, body).then(() => {
+		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Journey name already held by another preference')
@@ -193,8 +201,9 @@ describe('Integration testing for the preferences model', function() {
 	it('Should return weather and direction information', function(done){
 
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.getByID(preference_ID).then((data) => {
+		preferences.getByID(preference_ID, host).then((data) => {
 			expect(data.data.Origin).toEqual('Birmingham')
 			expect(data.data.Destination).toEqual('Coventry')
 			expect(data.data.Directions).not.toBe(undefined)
@@ -213,8 +222,9 @@ describe('Integration testing for the preferences model', function() {
 	it('Should throw an error saying there is no preferences found', function(done){
 
 		const preference_ID = 'Picnic'
+		const host = 'localhost:8080'
 
-		preferences.getByID(preference_ID).then(() => {
+		preferences.getByID(preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not found')
@@ -369,7 +379,7 @@ describe('Integration testing for the preferences model', function() {
 
 	it('Should return a list of all the preferences', function(done){
 
-		const host = 'localhost'
+		const host = 'localhost:8080'
 
 		const data = preferences.getAll(host)
 
