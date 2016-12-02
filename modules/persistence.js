@@ -222,6 +222,7 @@ exports.accountExists = username => new Promise( (resolve, reject) => {
 exports.getPassword = username => new Promise( (resolve, reject) => {
 
 	const firstIndex = 0
+
 	Database.Accounts.find({username: username}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (docs.length) resolve(docs[firstIndex].password)

@@ -109,6 +109,7 @@ describe('Integration testing for the preferences model', function() {
 		const body = {journey: 'Meeting', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
 		const host = 'localhost:8080'
+
 		preferences.addNew(auth, body, host).then(() => {
 			done()
 		}).catch((error) => {
@@ -240,8 +241,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Swindon'}
 		const preference_ID = 'Meeting'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then((data) => {
+		preferences.updateByID(auth, body, preference_ID, host).then((data) => {
 
 			expect(data.message).toEqual('Preference with the name Meeting is Updated')
 			expect(data.status).toEqual(globals.status.ok)
@@ -261,8 +263,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: {username: 'Millro', password: '1234566'}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid username')
@@ -276,8 +279,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Swindon'}
 		const preference_ID = 'Picnic'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not in list')
@@ -292,8 +296,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Coventry'}
 		let auth
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: Authorization head is missing')
@@ -307,8 +312,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: { username: 'Millroy', password: '12345'}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid password')
@@ -322,8 +328,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham', destination: 'Coventry'}
 		const auth = {basic: {}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: missing username / password')
@@ -337,8 +344,9 @@ describe('Integration testing for the preferences model', function() {
 		let body
 		const preference_ID = 'Meeting'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -352,8 +360,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {destination: 'Swindon'}
 		const preference_ID = 'Meeting'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -367,8 +376,9 @@ describe('Integration testing for the preferences model', function() {
 		const body = {origin: 'Birmingham'}
 		const preference_ID = 'Meeting'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.updateByID(auth, body, preference_ID).then(() => {
+		preferences.updateByID(auth, body, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('JSON data missing in request body')
@@ -395,8 +405,9 @@ describe('Integration testing for the preferences model', function() {
 	it('Should return an error saying preference does not exist', function(done){
 
 		const preference_ID = 'Picnic'
+		const host = 'localhost:8080'
 
-		preferences.getByID(preference_ID).then(() => {
+		preferences.getByID(preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toEqual('Preference not found')
@@ -410,8 +421,9 @@ describe('Integration testing for the preferences model', function() {
 
 		let auth
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then(() => {
+		preferences.deleteByID(auth, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: Authorization head is missing')
@@ -424,8 +436,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const auth = {basic: {}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then(() => {
+		preferences.deleteByID(auth, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: missing username / password')
@@ -438,8 +451,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const auth = {basic: {username: 'Millro', password: '1234566'}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then(() => {
+		preferences.deleteByID(auth, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid username')
@@ -452,8 +466,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const auth = {basic: { username: 'Millroy', password: '12345'}}
 		const preference_ID = 'Meeting'
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then(() => {
+		preferences.deleteByID(auth, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Error: invalid password')
@@ -466,8 +481,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const preference_ID = 'Meeting'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then((data) => {
+		preferences.deleteByID(auth, preference_ID, host).then((data) => {
 
 			expect(data.message).toEqual('Preference Meeting is sucessfully deleted')
 			expect(data.status).toEqual(globals.status.ok)
@@ -487,8 +503,9 @@ describe('Integration testing for the preferences model', function() {
 
 		const preference_ID = 'Picnic'
 		const auth = {basic: { username: 'Millroy', password: '1234566'}}
+		const host = 'localhost:8080'
 
-		preferences.deleteByID(auth, preference_ID).then(() => {
+		preferences.deleteByID(auth, preference_ID, host).then(() => {
 			done()
 		}).catch((error) => {
 			expect(error.message).toBe('Preference not in list')

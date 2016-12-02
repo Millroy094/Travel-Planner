@@ -546,7 +546,11 @@
 501
 502
 503
-504</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+504
+505
+506
+507
+508</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -636,6 +640,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -711,6 +716,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -814,6 +820,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -845,6 +852,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1137,6 +1145,7 @@ exports.initialize = () =&gt; new Promise((resolve, reject) =&gt; {
  * @function getByID
  * @public
  * @param {string} preferenceID - represents the id of the preference
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns valid data or returns an error
  */
 exports.getByID = (preferenceID, host) =&gt; new Promise ((resolve, reject) =&gt; {
@@ -1227,6 +1236,7 @@ exports.getAll = function(host) {
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the newly added data or returns an error
  */
 exports.addNew = (auth, body, host) =&gt; new Promise((resolve,reject) =&gt; {
@@ -1315,9 +1325,10 @@ exports.addNew = (auth, body, host) =&gt; new Promise((resolve,reject) =&gt; {
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {string} preferenceID - represents the id of the preference to be deleted
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the deleted data or returns an error
  */
-exports.deleteByID = (auth, preferenceID) =&gt; new Promise((resolve,reject) =&gt; {
+exports.deleteByID = (auth, preferenceID, host) =&gt; new Promise((resolve,reject) =&gt; {
 &nbsp;
 	/* Authenticates the request, if failed authentication rejects with an error */
 &nbsp;
@@ -1342,7 +1353,7 @@ exports.deleteByID = (auth, preferenceID) =&gt; new Promise((resolve,reject) =&g
 	/* If data was deleted sucessfully it then filters from the data in preferences list and chucks out one with same preference id */
 &nbsp;
 		preferences = preferences.filter(preference =&gt; preference.id !== preferenceID)
-		const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
+		const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`, data: { _links: { all_preferences: { href: `http://${host}/preferences`} } }}
 &nbsp;
 		resolve(data)
 &nbsp;
@@ -1365,9 +1376,10 @@ exports.deleteByID = (auth, preferenceID) =&gt; new Promise((resolve,reject) =&g
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
  * @param {string} preferenceID - represents the id of the preference to be deleted
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the newly added data or returns an error
  */
-exports.updateByID = (auth, body, preferenceID) =&gt; new Promise((resolve, reject) =&gt; {
+exports.updateByID = (auth, body, preferenceID, host) =&gt; new Promise((resolve, reject) =&gt; {
 &nbsp;
 	/* Authenticates the request, if failed authentication rejects with an error */
 &nbsp;
@@ -1422,7 +1434,7 @@ exports.updateByID = (auth, body, preferenceID) =&gt; new Promise((resolve, reje
 					preferences[preference].origin = origin
 					preferences[preference].destination = destination
 					preferences[preference].modified = modified
-					const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated` }
+					const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated`, data: { _links: { self: { href: `http://${host}/preferences/${preferences[preference].id}`} }, preference: preferences[preference]} }
 &nbsp;
 					resolve(data)
 &nbsp;
@@ -1558,7 +1570,7 @@ exports.deleteAllPreferences = () =&gt; new Promise((resolve, reject) =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Nov 30 2016 11:32:41 GMT+0000 (GMT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 02 2016 14:43:57 GMT+0000 (GMT)
 </div>
 </div>
 <script src="../prettify.js"></script>

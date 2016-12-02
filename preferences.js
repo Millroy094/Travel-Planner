@@ -86,6 +86,7 @@ exports.initialize = () => new Promise((resolve, reject) => {
  * @function getByID
  * @public
  * @param {string} preferenceID - represents the id of the preference
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns valid data or returns an error
  */
 exports.getByID = (preferenceID, host) => new Promise ((resolve, reject) => {
@@ -176,6 +177,7 @@ exports.getAll = function(host) {
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the newly added data or returns an error
  */
 exports.addNew = (auth, body, host) => new Promise((resolve,reject) => {
@@ -264,9 +266,10 @@ exports.addNew = (auth, body, host) => new Promise((resolve,reject) => {
  * @public
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {string} preferenceID - represents the id of the preference to be deleted
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the deleted data or returns an error
  */
-exports.deleteByID = (auth, preferenceID) => new Promise((resolve,reject) => {
+exports.deleteByID = (auth, preferenceID, host) => new Promise((resolve,reject) => {
 
 	/* Authenticates the request, if failed authentication rejects with an error */
 
@@ -291,7 +294,7 @@ exports.deleteByID = (auth, preferenceID) => new Promise((resolve,reject) => {
 	/* If data was deleted sucessfully it then filters from the data in preferences list and chucks out one with same preference id */
 
 		preferences = preferences.filter(preference => preference.id !== preferenceID)
-		const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`}
+		const data = { status: globals.status.ok, format: globals.format.json, message: `Preference ${preferenceID} is sucessfully deleted`, data: { _links: { all_preferences: { href: `http://${host}/preferences`} } }}
 
 		resolve(data)
 
@@ -314,9 +317,10 @@ exports.deleteByID = (auth, preferenceID) => new Promise((resolve,reject) => {
  * @param {authorization} auth - represents the authorization data supplied in the http request
  * @param {body} body - represents the data to be added, supplied in the http request
  * @param {string} preferenceID - represents the id of the preference to be deleted
+ * @param {string} host - represents the host the API is running on
  * @returns {Promise} returns approval of the newly added data or returns an error
  */
-exports.updateByID = (auth, body, preferenceID) => new Promise((resolve, reject) => {
+exports.updateByID = (auth, body, preferenceID, host) => new Promise((resolve, reject) => {
 
 	/* Authenticates the request, if failed authentication rejects with an error */
 
@@ -371,7 +375,7 @@ exports.updateByID = (auth, body, preferenceID) => new Promise((resolve, reject)
 					preferences[preference].origin = origin
 					preferences[preference].destination = destination
 					preferences[preference].modified = modified
-					const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated` }
+					const data = {status: globals.status.ok, format: globals.format.json, message: `Preference with the name ${preferenceID} is Updated`, data: { _links: { self: { href: `http://${host}/preferences/${preferences[preference].id}`} }, preference: preferences[preference]} }
 
 					resolve(data)
 

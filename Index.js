@@ -22,8 +22,8 @@ const defaultPort = 8080
 /* Retrives all preferences to local preferences list */
 preferences.initialize().then((data) => {
 	console.log(` ${data} preferences initialized`)
-}).catch((error) => {
-	console.log(error)
+}).catch(() => {
+	console.log('No preferences found')
 })
 
 
@@ -122,6 +122,9 @@ server.post('/preferences', function(req, res) {
 
 server.put('/preferences/:preferenceID', function(req, res) {
 
+	/* gets the host from the request */
+	const host = req.headers.host
+
 	/* Gets the authentication information and stores it in an object */
 	const auth = req.authorization
 
@@ -130,10 +133,10 @@ server.put('/preferences/:preferenceID', function(req, res) {
 
 
 	/* It will either update it or send an error response*/
-	preferences.updateByID(auth, req.body, preferenceID).then((data) => {
+	preferences.updateByID(auth, req.body, preferenceID, host).then((data) => {
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.send(data.status, {message: data.message})
+		res.send(data.status, {message: data.message, data: data.data})
 
 
 	}).catch((error) => {
@@ -149,6 +152,9 @@ server.put('/preferences/:preferenceID', function(req, res) {
 /* This route will delete the specified preference  */
 server.del('/preferences/:preferenceID', function(req, res) {
 
+	/* gets the host from the request */
+	const host = req.headers.host
+
 	/* Gets the authentication information and stores it in an object */
 	const auth = req.authorization
 
@@ -156,11 +162,11 @@ server.del('/preferences/:preferenceID', function(req, res) {
 	const preferenceID = req.params.preferenceID
 
 	/* It will either delete it or send an error response*/
-	preferences.deleteByID(auth, preferenceID).then((data) => {
+	preferences.deleteByID(auth, preferenceID, host).then((data) => {
 
 		res.setHeader('content-type', data.format)
 		res.setHeader('Allow', 'GET, POST', 'PUT', 'DELETE')
-		res.send(data.status, {message: data.message})
+		res.send(data.status, {message: data.message, data: data.data})
 		res.end()
 
 	}).catch((error) => {
