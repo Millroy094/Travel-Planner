@@ -2,12 +2,14 @@
   "name": "travel-planner",
   "version": "1.0.0",
   "description": "API to assist users to plan their journey",
-  "main": "Index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node Index.js",
+    "start": "node index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
-    "acceptence": "node_modules/.bin/jasmine-node test --verbose",
-    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec"
+    "acceptance": "./node_modules/.bin/jasmine-node test/ --verbose",
+    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec",
+    "doc": "node_modules/.bin/jsdoc modules/",
+    "linter": "node_modules/.bin/eslint ."
   },
   "repository": {
     "type": "git",
@@ -19,14 +21,15 @@
   "author": "Millroy S Fernandes",
   "license": "ISC",
   "dependencies": {
-    "basic-auth": "^1.0.4",
     "bcrypt": "^0.8.7",
     "frisby": "^0.8.5",
+    "fs": "0.0.1-security",
     "mongoose": "^4.6.7",
     "readline-sync": "^1.2.21",
     "replaceall": "^0.1.6",
     "request": "^2.79.0",
     "restify": "^4.3.0",
+    "rewire": "^2.5.2",
     "sync-request": "^2.1.0"
   },
   "bugs": {
@@ -36,6 +39,7 @@
   "devDependencies": {
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",
+    "forever": "^0.15.3",
     "istanbul": "^0.4.5",
     "jasmine-node": "^1.14.5",
     "jsdoc": "^3.4.2"
