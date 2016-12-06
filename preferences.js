@@ -11,7 +11,7 @@ const globals = require('./modules/globals')
 const forecast = require('./modules/weather')
 const directions = require('./modules/directions')
 const persistence = require('./modules/persistence')
-const authorization = require('./modules/authorization')
+const authorization = require('./modules/Authorization')
 
 
 /* This object will store the prefered origin and destination */
