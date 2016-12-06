@@ -2,9 +2,9 @@
   "name": "travel-planner",
   "version": "1.0.0",
   "description": "API to assist users to plan their journey",
-  "main": "index.js",
+  "main": "Index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node Index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
     "acceptence": "node_modules/.bin/jasmine-node test --verbose",
     "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec"
