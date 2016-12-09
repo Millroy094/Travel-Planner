@@ -9,7 +9,7 @@
     "acceptance": "./node_modules/.bin/jasmine-node test/ --verbose",
     "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec",
     "doc": "node_modules/.bin/jsdoc modules/",
-    "linter": "node_modules/.bin/eslint ."
+    "linter": "node_modules/.bin/eslint "
   },
   "repository": {
     "type": "git",
