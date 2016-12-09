@@ -5,7 +5,7 @@ The API itself allows you to store your preferences or favourites where you want
 Anything like adding a new preferences, updating, and deleting an existing preference required basic authenication. 
 Viewing an individual preference or a list of preferences does not require user authentication.
 
-- General Guidlines to use the API
+General Guidlines to use the API
 
 The API consists of two collections Users for all the users registered and preferences to all the preferences being stored
 Before you can add preference you should register an user, user is created without basic auth, username and password is passed in the body as JSON data.
