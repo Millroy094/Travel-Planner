@@ -1,4 +1,5 @@
-Welcome to Travel-Planner API!! This API is help you plan route from city to city within the UK. 
+Welcome to Travel-Planner API!! This API is to help you plan your route from city to city within the UK.
+The API gets its data from google maps directions api and the forcast.io and use it all as one and creates a mesh of it.
 In this document I will describe the API i.e. what it does and how it does it.
 The API itself allows you to store your preferences or favourites where you want to travel from-to and name it.
 Anything like adding a new preferences, updating, and deleting an existing preference required basic authenication. 
