@@ -12,6 +12,6 @@ Before you can add preference you should register an user, user is created witho
 To post a new preference, we put the registered username and password in the authorization header and in the body we pass journey i.e. name of the journey, the origin, and the destination.
 To update we need to pass the origin and destination in the body, with basic auth of a registered user, and link to contain the preference ID of the preference to be updated.
 Delete a preference would require basic auth of a registered user, and link to contain the preference ID of the preference to be deleted.
-To see all the list of preferences you dont need authenication header and same goes for accessing a particular preference, all you need to supply is the preference ID
+To see all the list of preferences you dont need authenication header and same goes for accessing a particular preference, all you need to supply is the preference ID.
 
 
