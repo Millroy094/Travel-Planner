@@ -3,7 +3,6 @@
 const preferences = require('../preferences')
 const globals = require('../modules/globals')
 
-
 describe('Integration testing for the preferences model', function() {
 
 
@@ -205,6 +204,7 @@ describe('Integration testing for the preferences model', function() {
 		const host = 'localhost:8080'
 
 		preferences.getByID(preference_ID, host).then((data) => {
+
 			expect(data.data.Origin).toEqual('Birmingham')
 			expect(data.data.Destination).toEqual('Coventry')
 			expect(data.data.Directions).not.toBe(undefined)

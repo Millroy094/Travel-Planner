@@ -13,7 +13,6 @@ frisby.globalSetup({
 	}
 })
 
-
 frisby.create('get a empty list of preferences')
 	.get('http://localhost:8080/preferences')
 	.expectStatus(globals.status.notFound)

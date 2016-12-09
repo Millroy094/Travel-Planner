@@ -8,6 +8,7 @@
 
 const request = require('request')
 const replaceAll = require('replaceall')
+const APIKey = 'AIzaSyBgpCjYQpQ5lYDDKa_fu3Hwuoh1LyXMazY'
 
 
 /**
@@ -108,7 +109,7 @@ exports.getDirections = (origin, destination) => new Promise((resolve, reject) =
 function apiCall(origin, destination) {
 	return new Promise((resolve, reject) => {
 
-		const url = `https://maps.googleapis.com/maps/api/directions/json?region=gb&origin=${origin}&destination=${destination}`
+		const url = `https://maps.googleapis.com/maps/api/directions/json?region=gb&origin=${origin}&destination=${destination}&key=${APIKey}`
 
 
 		request.get(url, (err, res, body) => {
