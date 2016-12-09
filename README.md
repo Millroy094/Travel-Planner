@@ -5,7 +5,7 @@ The API itself allows you to store your preferences or favourites where you want
 Anything like adding a new preferences, updating, and deleting an existing preference required basic authenication. 
 Viewing an individual preference or a list of preferences does not require user authentication.
 
-- General Guidlines to use the API -
+- General Guidlines to use the API
 
 The API consists of two collections Users for all the users registered and preferences to all the preferences being stored
 Before you can add preference you should register an user, user is created without basic auth, username and password is passed in the body as JSON data.
@@ -14,5 +14,4 @@ To update we need to pass the origin and destination in the body, with basic aut
 Delete a preference would require basic auth of a registered user, and link to contain the preference ID of the preference to be deleted.
 To see all the list of preferences you dont need authenication header and same goes for accessing a particular preference, all you need to supply is the preference ID
 
-- END -
 
