@@ -1,0 +1,13 @@
+{
+	"spec_files": [
+		"./spec/directions-spec.js",
+		"./spec/invalid_directions-spec.js",
+		"./spec/weather-spec.js",
+		"./spec/Authorization-spec.js",
+		"./spec/persistence-spec.js",
+		"./spec/preferences-spec.js"
+	],
+	"helpers": [
+		"helpers/**/*.js"
+	]
+}

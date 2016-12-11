@@ -7,7 +7,7 @@
     "start": "node Index.js",
     "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch .",
     "acceptance": "./node_modules/.bin/jasmine-node test/ --verbose",
-    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/test/** -x **/spec/** -x **index.js** ./node_modules/.bin/jasmine-node spec",
+    "coverage": "./node_modules/.bin/istanbul cover -x **/Schema/** -x **/spec/** -x **/test/** -x **index.js** jasmine.js",
     "doc": "node_modules/.bin/jsdoc modules/",
     "linter": "node_modules/.bin/eslint "
   },
@@ -41,6 +41,8 @@
     "eslint-plugin-react": "^6.7.1",
     "forever": "^0.15.3",
     "istanbul": "^0.4.5",
+    "jasmine": "^2.5.2",
+    "jasmine-console-reporter": "^1.2.7",
     "jasmine-node": "^1.14.5",
     "jsdoc": "^3.4.2"
   }
